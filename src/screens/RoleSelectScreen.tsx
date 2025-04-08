@@ -1,29 +1,41 @@
 import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 export default function RoleSelectScreen() {
   const navigate = useNavigate();
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200 px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Выберите роль</h1>
-      <div className="grid grid-cols-2 gap-6 w-full max-w-md">
-        <Card
-          onClick={() => navigate("/driver")}
-          className="flex flex-col items-center p-6 bg-white/60 backdrop-blur-lg shadow-xl rounded-2xl cursor-pointer hover:shadow-2xl transition"
-        >
-          <img src="/public/steering-wheel.png" alt="Водитель" className="w-16 h-16 mb-4" />
-          <Button variant="default" className="w-full">Водитель</Button>
-        </Card>
+    <main className="min-h-screen bg-gradient-to-br from-zinc-900 to-zinc-800 flex flex-col items-center justify-center p-4">
+      <motion.h1 
+        initial={{ opacity: 0, y: -10 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.6 }}
+        className="text-3xl sm:text-4xl font-bold text-white mb-10 text-center"
+      >
+        Выберите роль
+      </motion.h1>
 
-        <Card
-          onClick={() => navigate("/passenger")}
-          className="flex flex-col items-center p-6 bg-white/60 backdrop-blur-lg shadow-xl rounded-2xl cursor-pointer hover:shadow-2xl transition"
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-md">
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
+          className="bg-zinc-700 p-6 rounded-2xl shadow-lg flex flex-col items-center text-white"
         >
-          <img src="/public/person-icon.png" alt="Пассажир" className="w-16 h-16 mb-4" />
-          <Button variant="default" className="w-full">Пассажир</Button>
-        </Card>
+          <img src="/steering-wheel-icon.png" alt="Водитель" className="h-20 w-20 mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Водитель</h2>
+          <Button className="w-full mt-2" onClick={() => navigate("/driver")}>Выбрать</Button>
+        </motion.div>
+
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
+          className="bg-zinc-700 p-6 rounded-2xl shadow-lg flex flex-col items-center text-white"
+        >
+          <img src="/person-icon.png" alt="Пассажир" className="h-20 w-20 mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Пассажир</h2>
+          <Button className="w-full mt-2" onClick={() => navigate("/passenger")}>Выбрать</Button>
+        </motion.div>
       </div>
     </main>
   );
