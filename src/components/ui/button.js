@@ -1,10 +1,12 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cn } from "../../lib/utils";
-const Button = React.forwardRef(({ className, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
-    return (_jsx(Comp, { className: cn("inline-flex items-center justify-center rounded-2xl bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 transition", className), ref: ref, ...props }));
+import { cn } from "@/lib/utils";
+import { forwardRef } from "react";
+export const Button = forwardRef(({ className, variant = "default", ...props }, ref) => {
+    const baseStyles = "inline-flex items-center justify-center rounded-md text-sm font-medium";
+    const variants = {
+        default: "bg-blue-600 text-white hover:bg-blue-700",
+        outline: "border border-blue-600 text-blue-600 hover:bg-blue-100",
+        ghost: "text-blue-600 hover:bg-blue-50",
+    };
+    return (_jsx("button", { ref: ref, className: cn(baseStyles, variants[variant], className), ...props }));
 });
-Button.displayName = "Button";
-export { Button };
