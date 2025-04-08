@@ -13,7 +13,7 @@ export default function RoleSelectScreen() {
           onClick={() => navigate("/driver")}
           className="flex flex-col items-center p-6 bg-white/60 backdrop-blur-lg shadow-xl rounded-2xl cursor-pointer hover:shadow-2xl transition"
         >
-          <img src="/icons/steering-wheel.png" alt="Водитель" className="w-16 h-16 mb-4" />
+          <img src="/public/steering-wheel.png" alt="Водитель" className="w-16 h-16 mb-4" />
           <Button variant="default" className="w-full">Водитель</Button>
         </Card>
 
@@ -21,7 +21,7 @@ export default function RoleSelectScreen() {
           onClick={() => navigate("/passenger")}
           className="flex flex-col items-center p-6 bg-white/60 backdrop-blur-lg shadow-xl rounded-2xl cursor-pointer hover:shadow-2xl transition"
         >
-          <img src="/icons/user.png" alt="Пассажир" className="w-16 h-16 mb-4" />
+          <img src="/public/person-icon.png" alt="Пассажир" className="w-16 h-16 mb-4" />
           <Button variant="default" className="w-full">Пассажир</Button>
         </Card>
       </div>
