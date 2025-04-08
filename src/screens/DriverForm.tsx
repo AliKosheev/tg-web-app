@@ -26,7 +26,7 @@ export default function DriverForm() {
     e.preventDefault();
 
     try {
-      const response = await api.post("/rides", {
+      await api.post("/rides", {
         from,
         to,
         date,
@@ -57,43 +57,82 @@ export default function DriverForm() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label>Имя</Label>
-              <Input value={name} onChange={(e) => setName(e.target.value)} required />
+              <Input
+                value={name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                required
+              />
             </div>
             <div>
               <Label>Телефон</Label>
-              <Input value={phone} onChange={(e) => setPhone(e.target.value)} required />
+              <Input
+                value={phone}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
+                required
+              />
             </div>
             <div>
               <Label>Откуда</Label>
-              <Input value={from} onChange={(e) => setFrom(e.target.value)} required />
+              <Input
+                value={from}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFrom(e.target.value)}
+                required
+              />
             </div>
             <div>
               <Label>Куда</Label>
-              <Input value={to} onChange={(e) => setTo(e.target.value)} required />
+              <Input
+                value={to}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTo(e.target.value)}
+                required
+              />
             </div>
             <div>
               <Label>Дата</Label>
-              <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+              <Input
+                type="date"
+                value={date}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDate(e.target.value)}
+                required
+              />
             </div>
             <div>
               <Label>Время</Label>
-              <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
+              <Input
+                type="time"
+                value={time}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTime(e.target.value)}
+                required
+              />
             </div>
             <div>
               <Label>Марка машины</Label>
-              <Input value={car} onChange={(e) => setCar(e.target.value)} />
+              <Input
+                value={car}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCar(e.target.value)}
+              />
             </div>
             <div>
               <Label>Свободных мест</Label>
-              <Input type="number" value={seats} onChange={(e) => setSeats(e.target.value)} />
+              <Input
+                type="number"
+                value={seats}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSeats(e.target.value)}
+              />
             </div>
             <div className="flex items-center gap-4">
               <Label className="flex items-center gap-2">
-                <Checkbox checked={luggage} onCheckedChange={() => setLuggage(!luggage)} />
+                <Checkbox
+                  checked={luggage}
+                  onCheckedChange={(value) => setLuggage(Boolean(value))}
+                />
                 Есть багаж
               </Label>
               <Label className="flex items-center gap-2">
-                <Checkbox checked={parcel} onCheckedChange={() => setParcel(!parcel)} />
+                <Checkbox
+                  checked={parcel}
+                  onCheckedChange={(value) => setParcel(Boolean(value))}
+                />
                 Возможна посылка
               </Label>
             </div>
