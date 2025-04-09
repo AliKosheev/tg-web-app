@@ -1,41 +1,51 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function RoleSelectScreen() {
   const navigate = useNavigate();
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-zinc-900 to-zinc-800 flex flex-col items-center justify-center p-4">
-      <motion.h1 
-        initial={{ opacity: 0, y: -10 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.6 }}
-        className="text-3xl sm:text-4xl font-bold text-white mb-10 text-center"
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200 px-4 py-12">
+      <motion.h1
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-3xl font-bold text-gray-900 mb-8"
       >
         Выберите роль
       </motion.h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-md">
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className="bg-zinc-700 p-6 rounded-2xl shadow-lg flex flex-col items-center text-white"
-        >
-          <img src="/steering-wheel-icon.png" alt="Водитель" className="h-20 w-20 mb-4" />
-          <h2 className="text-xl font-semibold mb-2">Водитель</h2>
-          <Button className="w-full mt-2" onClick={() => navigate("/driver")}>Выбрать</Button>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className="bg-zinc-700 p-6 rounded-2xl shadow-lg flex flex-col items-center text-white"
-        >
-          <img src="/person-icon.png" alt="Пассажир" className="h-20 w-20 mb-4" />
-          <h2 className="text-xl font-semibold mb-2">Пассажир</h2>
-          <Button className="w-full mt-2" onClick={() => navigate("/passenger")}>Выбрать</Button>
-        </motion.div>
+      <div className="grid grid-cols-2 gap-6 w-full max-w-md">
+        {[
+          {
+            label: "Водитель",
+            img: "/steering-wheel-icon.png",
+            route: "/driver",
+          },
+          {
+            label: "Пассажир",
+            img: "/person-icon.png",
+            route: "/passenger",
+          },
+        ].map((role, index) => (
+          <motion.div
+            key={role.label}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <Card
+              onClick={() => navigate(role.route)}
+              className="flex flex-col items-center p-6 bg-white/60 backdrop-blur-md shadow-lg hover:shadow-2xl rounded-2xl transition cursor-pointer"
+            >
+              <img src={role.img} alt={role.label} className="w-16 h-16 mb-4" />
+              <Button variant="default" className="w-full text-sm font-semibold">
+                {role.label}
+              </Button>
+            </Card>
+          </motion.div>
+        ))}
       </div>
     </main>
   );
