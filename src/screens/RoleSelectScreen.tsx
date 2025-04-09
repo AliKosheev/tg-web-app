@@ -1,51 +1,45 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import Blob from "@/components/ui/blob";
+import DotsGrid from "@/components/ui/dots-grid";
 
 export default function RoleSelectScreen() {
   const navigate = useNavigate();
 
   return (
-    <main className="relative min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 px-4 py-12 flex flex-col items-center justify-center overflow-hidden">
-      {/* Grid Dots Background */}
-      <div className="absolute inset-0 bg-[url('/dots-grid.svg')] bg-repeat opacity-30 z-0"></div>
-
-      {/* Blob Animation */}
-      <motion.div
-        className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full bg-purple-300 opacity-30 mix-blend-multiply filter blur-2xl animate-blob z-0"
-        animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
-        transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
-      />
+    <main className="relative min-h-screen w-full flex flex-col items-center justify-center bg-[#F0F4FF] overflow-hidden px-4 py-10">
+      <DotsGrid />
+      <Blob className="absolute top-10 left-[-50px] w-[300px] h-[300px] z-0 opacity-60" />
 
       <motion.h1
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative text-3xl font-bold text-gray-900 mb-10 z-10"
+        className="text-3xl font-bold text-gray-800 z-10 mb-8"
       >
-        Кто вы?
+        Выберите роль
       </motion.h1>
 
-      <div className="relative grid grid-cols-1 gap-6 w-full max-w-xs z-10">
-        <Card
+      <div className="grid grid-cols-2 gap-6 w-full max-w-sm z-10">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex flex-col items-center rounded-3xl bg-white shadow-md p-5 cursor-pointer transition"
           onClick={() => navigate("/driver")}
-          className="flex flex-col items-center p-6 bg-white shadow-xl rounded-2xl cursor-pointer hover:shadow-2xl transition"
         >
-          <img src="/steering-wheel-icon.png" alt="Водитель" className="w-20 h-20 mb-4" />
-          <Button variant="default" className="w-full text-base font-semibold">
-            Водитель
-          </Button>
-        </Card>
+          <img src="/steering-wheel-icon.png" alt="Водитель" className="w-16 h-16 mb-4" />
+          <Button className="w-full font-medium">Водитель</Button>
+        </motion.div>
 
-        <Card
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex flex-col items-center rounded-3xl bg-white shadow-md p-5 cursor-pointer transition"
           onClick={() => navigate("/passenger")}
-          className="flex flex-col items-center p-6 bg-white shadow-xl rounded-2xl cursor-pointer hover:shadow-2xl transition"
         >
-          <img src="/person-icon.png" alt="Пассажир" className="w-20 h-20 mb-4" />
-          <Button variant="default" className="w-full text-base font-semibold">
-            Пассажир
-          </Button>
-        </Card>
+          <img src="/person-icon.png" alt="Пассажир" className="w-16 h-16 mb-4" />
+          <Button className="w-full font-medium">Пассажир</Button>
+        </motion.div>
       </div>
     </main>
   );
