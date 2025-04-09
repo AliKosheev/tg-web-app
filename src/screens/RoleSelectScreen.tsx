@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import Blob from "@/components/ui/blob";
-import DotsGrid from "@/components/ui/dots-grid";
+import { Blob } from "@/components/ui/blob";
+import { DotsGrid } from "@/components/ui/dots-grid";
 
 export default function RoleSelectScreen() {
   const navigate = useNavigate();
