@@ -8,39 +8,34 @@ export default function RoleSelectScreen() {
   const navigate = useNavigate();
 
   return (
-    <main className="relative min-h-screen w-full flex flex-col items-center justify-center bg-[#F0F4FF] overflow-hidden px-4 py-10">
-      <DotsGrid />
-      <Blob className="absolute top-10 left-[-50px] w-[300px] h-[300px] z-0 opacity-60" />
+    <main className="relative min-h-screen flex flex-col items-center justify-center bg-[#0E0F11] overflow-hidden px-4 py-8">
+      {/* Static dots grid background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,_#1E1F22_1px,_transparent_1px)] [background-size:20px_20px] opacity-40 z-0" />
 
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-3xl font-bold text-gray-800 z-10 mb-8"
-      >
-        Выберите роль...
-      </motion.h1>
+      {/* Blurred animated blob */}
+      <div className="absolute top-16 w-[220px] h-[220px] bg-[conic-gradient(from_0deg,_#fa709a,_#784ba0,_#2b86c5,_#fa709a)] rounded-full blur-3xl opacity-50 animate-spin-slow z-10" />
 
-      <div className="grid grid-cols-2 gap-6 w-full max-w-sm z-10">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex flex-col items-center rounded-3xl bg-white shadow-md p-5 cursor-pointer transition"
+      {/* Heading */}
+      <h1 className="text-white text-2xl font-semibold z-20 mb-8 text-center">
+        Кто вы в этой поездке?
+      </h1>
+
+      {/* Role selection buttons */}
+      <div className="z-20 w-full max-w-xs flex flex-col items-center gap-4">
+        <Button
+          className="w-full rounded-xl py-4 text-base font-semibold bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
           onClick={() => navigate("/driver")}
         >
-          <img src="/steering-wheel-icon.png" alt="Водитель" className="w-16 h-16 mb-4" />
-          <Button className="w-full font-medium">Водитель</Button>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex flex-col items-center rounded-3xl bg-white shadow-md p-5 cursor-pointer transition"
+          Водитель
+        </Button>
+        <Button
+          className="w-full rounded-xl py-4 text-base font-semibold bg-[#1E1F22] text-white border border-white/10"
           onClick={() => navigate("/passenger")}
         >
-          <img src="/person-icon.png" alt="Пассажир" className="w-16 h-16 mb-4" />
-          <Button className="w-full font-medium">Пассажир</Button>
-        </motion.div>
+          Пассажир
+        </Button>
       </div>
     </main>
   );
 }
+
