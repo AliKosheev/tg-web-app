@@ -13,7 +13,7 @@ export default function RoleSelectScreen() {
         animate={{ opacity: 1, y: 0 }}
         className="text-3xl font-bold text-gray-900 mb-8"
       >
-        Выберите роль
+        Выберите роль пожалуйста
       </motion.h1>
 
       <div className="grid grid-cols-2 gap-6 w-full max-w-md">
