@@ -1,48 +1,51 @@
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
 export default function RoleSelectScreen() {
   const navigate = useNavigate();
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200 px-6 py-12">
+    <main className="relative min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 px-4 py-12 flex flex-col items-center justify-center overflow-hidden">
+      {/* Grid Dots Background */}
+      <div className="absolute inset-0 bg-[url('/dots-grid.svg')] bg-repeat opacity-30 z-0"></div>
+
+      {/* Blob Animation */}
+      <motion.div
+        className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full bg-purple-300 opacity-30 mix-blend-multiply filter blur-2xl animate-blob z-0"
+        animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
+        transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
+      />
+
       <motion.h1
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-3xl font-bold text-gray-900 mb-10 text-center"
+        className="relative text-3xl font-bold text-gray-900 mb-10 z-10"
       >
-        Выберите роль
+        Кто вы?
       </motion.h1>
 
-      <div className="grid grid-cols-1 gap-6 w-full max-w-sm">
-        {[{
-          label: "Водитель",
-          img: "/steering-wheel-icon.png",
-          route: "/driver",
-        }, {
-          label: "Пассажир",
-          img: "/person-icon.png",
-          route: "/passenger",
-        }].map((role, index) => (
-          <motion.div
-            key={role.label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Card
-              onClick={() => navigate(role.route)}
-              className="flex flex-col items-center justify-center gap-4 px-8 py-6 bg-white/70 backdrop-blur-md shadow-lg rounded-2xl cursor-pointer"
-            >
-              <img src={role.img} alt={role.label} className="w-24 h-24" />
-              <Button variant="default" className="w-full text-base font-semibold py-3">
-                {role.label}
-              </Button>
-            </Card>
-          </motion.div>
-        ))}
+      <div className="relative grid grid-cols-1 gap-6 w-full max-w-xs z-10">
+        <Card
+          onClick={() => navigate("/driver")}
+          className="flex flex-col items-center p-6 bg-white shadow-xl rounded-2xl cursor-pointer hover:shadow-2xl transition"
+        >
+          <img src="/steering-wheel-icon.png" alt="Водитель" className="w-20 h-20 mb-4" />
+          <Button variant="default" className="w-full text-base font-semibold">
+            Водитель
+          </Button>
+        </Card>
+
+        <Card
+          onClick={() => navigate("/passenger")}
+          className="flex flex-col items-center p-6 bg-white shadow-xl rounded-2xl cursor-pointer hover:shadow-2xl transition"
+        >
+          <img src="/person-icon.png" alt="Пассажир" className="w-20 h-20 mb-4" />
+          <Button variant="default" className="w-full text-base font-semibold">
+            Пассажир
+          </Button>
+        </Card>
       </div>
     </main>
   );
