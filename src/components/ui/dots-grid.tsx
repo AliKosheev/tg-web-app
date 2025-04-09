@@ -1,8 +1,12 @@
-export function DotsGrid() {
-    return (
-      <div
-        className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[length:20px_20px]"
-        style={{ zIndex: 0 }}
-      />
-    );
-  }
+import { cn } from "@/lib/utils";
+
+export function DotsGrid({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        "absolute inset-0 bg-[radial-gradient(#0003_1px,transparent_1px)] [background-size:16px_16px] opacity-10",
+        className
+      )}
+    />
+  );
+}

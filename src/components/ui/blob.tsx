@@ -1,20 +1,12 @@
-import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-export function Blob() {
+export function Blob({ className = "" }: { className?: string }) {
   return (
-    <motion.div
-      className="absolute w-[300px] h-[300px] bg-indigo-300/50 rounded-full blur-3xl"
-      animate={{
-        x: [0, 50, -30, 0],
-        y: [0, -40, 40, 0],
-        borderRadius: ["40%", "60%", "30%", "50%"],
-      }}
-      transition={{
-        duration: 12,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-      style={{ zIndex: 0 }}
+    <div
+      className={cn(
+        "absolute w-72 h-72 bg-blue-300 opacity-30 blur-3xl rounded-full animate-pulse",
+        className
+      )}
     />
   );
 }
