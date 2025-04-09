@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Blob } from "@/components/ui/blob";
 import { DotsGrid } from "@/components/ui/dots-grid";
@@ -8,29 +7,31 @@ export default function RoleSelectScreen() {
   const navigate = useNavigate();
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0f172a] px-4 py-8 text-white flex flex-col justify-end">
-      <div className="absolute inset-0 z-0">
-        <DotsGrid className="opacity-20 scale-[1.5]" />
+    <main className="relative min-h-screen flex flex-col items-center justify-end px-4 pb-10 pt-20 overflow-hidden bg-black text-white">
+      <DotsGrid className="absolute inset-0 opacity-[0.06] z-0" />
+
+      <div className="absolute top-10 z-10 w-[222px] h-[218px]">
         <Blob />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center gap-6 pb-10">
-        <h1 className="text-2xl font-bold">Выберите роль</h1>
+      <div className="relative z-10 w-full max-w-sm flex flex-col gap-6 items-center">
+        <h1 className="text-xl font-semibold text-center">
+          Кто вы в этой поездке?
+        </h1>
 
-        <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
-          <Button
-            className="h-20 text-base font-semibold"
-            onClick={() => navigate("/driver")}
-          >
-            Водитель
-          </Button>
-          <Button
-            className="h-20 text-base font-semibold"
-            onClick={() => navigate("/passenger")}
-          >
-            Пассажир
-          </Button>
-        </div>
+        <button
+          onClick={() => navigate("/driver")}
+          className="w-full py-3 rounded-2xl text-white font-semibold text-base bg-gradient-to-r from-violet-500 to-indigo-600"
+        >
+          Водитель
+        </button>
+
+        <button
+          onClick={() => navigate("/passenger")}
+          className="w-full py-3 rounded-2xl text-white font-semibold text-base bg-gradient-to-r from-indigo-700 to-indigo-900"
+        >
+          Пассажир
+        </button>
       </div>
     </main>
   );
