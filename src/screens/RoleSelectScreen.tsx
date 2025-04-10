@@ -13,7 +13,7 @@ export default function RoleSelectScreen() {
       <img
         src="/blob.gif"
         alt="Animated Blob"
-        className="absolute top-8 w-[222px] h-[218px] z-10 mix-blend-screen pointer-events-none select-none"
+        className="absolute top-8 w-[600px] h-[400px] z-10 mix-blend-screen pointer-events-none select-none"
       />
 
       {/* Контент */}
