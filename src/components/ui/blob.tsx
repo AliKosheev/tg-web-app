@@ -1,35 +1,28 @@
-import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function Blob() {
-  const controls = useAnimation();
-
-  useEffect(() => {
-    const sequence = async () => {
-      while (true) {
-        await controls.start({
-          borderRadius: [
-            "42% 58% 70% 30% / 30% 40% 60% 70%",
-            "30% 70% 60% 40% / 40% 60% 30% 70%",
-            "58% 42% 30% 70% / 60% 40% 70% 30%",
-            "42% 58% 70% 30% / 30% 40% 60% 70%",
-          ],
-          transition: {
-            duration: 8,
-            ease: "easeInOut",
-            repeat: Infinity,
-            repeatType: "loop",
-          },
-        });
-      }
-    };
-    sequence();
-  }, [controls]);
-
   return (
     <motion.div
-      animate={controls}
-      className="w-[222px] h-[218px] bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 blur-2xl"
+      className="w-full h-full"
+      animate={{
+        borderRadius: [
+          "40% 60% 70% 30% / 40% 40% 60% 60%",
+          "60% 40% 30% 70% / 30% 30% 70% 70%",
+          "40% 60% 70% 30% / 40% 40% 60% 60%",
+        ],
+      }}
+      transition={{
+        duration: 6, // Увеличь до 8-10 если хочешь совсем залипательно
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+      style={{
+        background: "radial-gradient(circle at 30% 30%, #ff6ec4, #7873f5)",
+        filter: "blur(60px)",
+        opacity: 0.7,
+        mixBlendMode: "screen", // опционально — убирает «тупую» заливку
+        pointerEvents: "none", // чтобы не мешал кликам
+      }}
     />
   );
 }
