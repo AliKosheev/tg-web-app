@@ -1,12 +1,10 @@
 import { useEffect, useRef } from "react";
-import * as animeModule from "animejs";
+import anime from "animejs/lib/anime.esm.js"; // 👈 это ключевой фикс
 
 const Blob = () => {
   const pathRef = useRef<SVGPathElement>(null);
 
   useEffect(() => {
-    const anime = (animeModule as any).default ?? animeModule;
-
     if (!pathRef.current) return;
 
     anime({
