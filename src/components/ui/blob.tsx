@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from "react";
-import anime from "animejs";
+import { useEffect, useRef } from "react";
+import * as animeModule from "animejs";
 
 const Blob = () => {
   const pathRef = useRef<SVGPathElement>(null);
 
   useEffect(() => {
-    const animate = (anime as any).default ?? anime;
+    const anime = (animeModule as any).default ?? animeModule;
 
     if (!pathRef.current) return;
 
-    animate({
+    anime({
       targets: pathRef.current,
       d: [
         {
