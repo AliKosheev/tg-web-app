@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import anime from "animejs";
+import * as Anime from "animejs";
+const anime = Anime.default || Anime;
 
 const Blob = () => {
   const pathRef = useRef<SVGPathElement>(null);
