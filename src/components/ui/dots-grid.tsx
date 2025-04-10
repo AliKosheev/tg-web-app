@@ -1,4 +1,3 @@
-// src/components/ui/dots-grid.tsx
 export function DotsGrid(props: React.ComponentProps<"svg">) {
     return (
       <svg
@@ -11,8 +10,15 @@ export function DotsGrid(props: React.ComponentProps<"svg">) {
         className={props.className}
       >
         <defs>
-          <pattern id="dots" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="1" fill="#ffffff" opacity="0.07" />
+          <pattern
+            id="dots"
+            x="0"
+            y="0"
+            width="9"
+            height="9"
+            patternUnits="userSpaceOnUse"
+          >
+            <circle cx="1.13" cy="1.13" r="1.13" fill="#ffffff" opacity="0.07" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#dots)" />
