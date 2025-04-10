@@ -1,15 +1,25 @@
-.animated-blob {
-    animation: blobPulse 20s ease-in-out infinite;
-  }
-  
-  @keyframes blobPulse {
-    0% {
-      transform: scale(1) rotate(0deg);
+@keyframes blobPulse {
+    0%, 100% {
+      transform: scale(1);
     }
     50% {
-      transform: scale(1.05) rotate(180deg);
+      transform: scale(1.05);
+    }
+  }
+  
+  @keyframes rotateSlow {
+    0% {
+      transform: rotate(0deg);
     }
     100% {
-      transform: scale(1) rotate(360deg);
+      transform: rotate(360deg);
     }
+  }
+  
+  .animate-rotate-slow {
+    animation: rotateSlow 60s linear infinite;
+  }
+  
+  .drop-shadow-glow {
+    filter: drop-shadow(0 0 20px rgba(142, 45, 226, 0.3));
   }
