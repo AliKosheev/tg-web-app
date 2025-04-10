@@ -1,4 +1,4 @@
-declare module "animejs" {
-    const anime: typeof import("animejs/lib/anime.esm.js").default;
+declare module "animejs/lib/anime.es.js" {
+    import anime from "animejs";
     export default anime;
   }
