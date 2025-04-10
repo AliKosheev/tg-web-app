@@ -1,9 +1,5 @@
 import { useEffect, useRef } from "react";
-
-// Используем require вместо import
-// чтобы избежать проблем с call signatures
-// и default импортом
-const anime = require("animejs");
+import anime from "animejs";
 
 const Blob = () => {
   const pathRef = useRef<SVGPathElement>(null);

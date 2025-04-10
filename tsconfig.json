@@ -18,5 +18,8 @@
       "@/*": ["src/*"]
     }
   },
+  "compilerOptions": {
+    "esModuleInterop": true
+  },
   "include": ["src"]
 }
