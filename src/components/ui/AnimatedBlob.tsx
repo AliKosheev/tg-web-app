@@ -2,10 +2,10 @@ import "./animatedBlob.css";
 
 export const AnimatedBlob = () => {
   return (
-    <div className="absolute top-[35%] left-1/2 -translate-x-1/2 -z-10">
+    <div className="absolute top-[30%] left-1/2 -translate-x-1/2 z-0 pointer-events-none">
       <svg
         viewBox="0 0 500 500"
-        className="w-[300px] h-[300px] drop-shadow-glow animate-rotate-slow"
+        className="w-[250px] h-[250px] drop-shadow-glow animate-rotate-slow"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
@@ -28,7 +28,10 @@ export const AnimatedBlob = () => {
             </stop>
           </linearGradient>
         </defs>
-        <path fill="url(#grad)">
+        <path
+          fill="url(#grad)"
+          d="M417,314Q413,378,358.5,417Q304,456,248,444Q192,432,151,396.5Q110,361,76,311.5Q42,262,59.5,195.5Q77,129,133,98.5Q189,68,251,60Q313,52,361,94.5Q409,137,417,195.5Q425,254,417,314Z"
+        >
           <animate
             attributeName="d"
             dur="12s"
