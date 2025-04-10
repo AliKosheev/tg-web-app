@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Blob from "@/components/ui/blob";
 import DotsGrid from "@/components/ui/dots-grid";
 
 export default function RoleSelectScreen() {
@@ -7,16 +6,18 @@ export default function RoleSelectScreen() {
 
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-end px-4 pb-10 pt-20 overflow-hidden bg-black text-white">
-      {/* Точки */}
-      <DotsGrid className="absolute inset-0 z-0 opacity-15" />
+      {/* Сетка точек */}
+      <DotsGrid className="absolute inset-0 z-0 opacity-10" />
 
-      {/* Блоб */}
-      <div className="absolute top-8 z-10 w-[222px] h-[218px]">
-        <Blob />
-      </div>
+      {/* Блоб-анимация */}
+      <img
+        src="/blob.gif"
+        alt="Animated Blob"
+        className="absolute top-8 w-[222px] h-[218px] z-10 mix-blend-screen pointer-events-none select-none"
+      />
 
       {/* Контент */}
-      <div className="relative z-10 w-full max-w-sm flex flex-col gap-6 items-center mt-60">
+      <div className="relative z-20 w-full max-w-sm flex flex-col gap-6 items-center mt-60">
         <h1 className="text-xl font-semibold text-center">
           Кто вы в этой поездке?
         </h1>
