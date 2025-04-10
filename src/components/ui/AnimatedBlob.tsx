@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import anime from "animejs";
 
 const paths = [
   "M417,314Q413,378,358.5,417Q304,456,248,444Q192,432,151,396.5Q110,361,76,311.5Q42,262,59.5,195.5Q77,129,133,98.5Q189,68,251,60Q313,52,361,94.5Q409,137,417,195.5Q425,254,417,314Z",
@@ -10,6 +9,8 @@ export const AnimatedBlob = () => {
   const pathRef = useRef<SVGPathElement>(null);
 
   useEffect(() => {
+    const anime = require("animejs"); // ✅ безопасно внутри useEffect
+
     if (!pathRef.current) return;
 
     anime({
