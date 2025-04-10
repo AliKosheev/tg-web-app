@@ -8,7 +8,7 @@ export default function RoleSelectScreen() {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-end px-4 pb-10 pt-20 overflow-hidden bg-black text-white">
       {/* Сетка точек — самый дальний фон */}
-      <DotsGrid className="absolute inset-0 z-0 opacity-30" />
+      <DotsGrid className="absolute inset-0 z-0 opacity-20" />
 
       {/* Blob-анимация — поверх точек, но под контентом */}
       <AnimatedBlob /> {/* ✅ вставляем сюда */}
