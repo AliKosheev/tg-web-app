@@ -8,7 +8,7 @@ export default function DotsGrid({ className }: { className?: string }) {
       style={{
         backgroundImage:
           "radial-gradient(#3a3a3a 2.26px, transparent 2.26px)",
-        backgroundSize: "9px 9px",
+        backgroundSize: "15px 15px",
       }}
     />
   );
