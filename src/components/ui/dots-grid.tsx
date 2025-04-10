@@ -5,7 +5,6 @@ export function DotsGrid(props: React.ComponentProps<"svg">) {
         width="100%"
         height="100%"
         preserveAspectRatio="none"
-        fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={props.className}
       >
@@ -18,7 +17,7 @@ export function DotsGrid(props: React.ComponentProps<"svg">) {
             height="9"
             patternUnits="userSpaceOnUse"
           >
-            <circle cx="1.13" cy="1.13" r="1.13" fill="#ffffff" opacity="0.07" />
+            <circle cx="1.13" cy="1.13" r="1.13" fill="white" opacity="0.05" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#dots)" />
