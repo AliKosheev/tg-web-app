@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,7 +52,13 @@ export default function DriverForm() {
     <main className="relative min-h-screen bg-black text-white px-4 py-6 flex items-start justify-center overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
 
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg p-6 shadow-lg space-y-4">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 40 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg p-6 shadow-lg space-y-4"
+      >
         <button
           onClick={() => navigate("/")}
           className="flex items-center text-sm text-indigo-400 hover:text-indigo-300 transition"
@@ -94,7 +101,7 @@ export default function DriverForm() {
             Добавить
           </Button>
         </form>
-      </div>
+      </motion.div>
     </main>
   );
 }
