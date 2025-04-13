@@ -2,7 +2,7 @@ import "./animatedBlob.css";
 
 export const AnimatedBlob = () => {
   return (
-    <div className="absolute top-[30%] left-1/2 -translate-x-1/2 z-0 pointer-events-none">
+    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-0 pointer-events-none">
       <svg
         viewBox="0 0 500 500"
         className="w-[250px] h-[250px] drop-shadow-glow animate-rotate-slow"
