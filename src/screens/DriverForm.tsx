@@ -68,16 +68,21 @@ export default function DriverForm() {
         </button>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Field label="Имя" value={name} onChange={setName} />
-          <Field label="Телефон" value={phone} onChange={setPhone} />
-          <Field label="Откуда" value={from} onChange={setFrom} />
-          <Field label="Куда" value={to} onChange={setTo} />
-          <Field label="Дата" value={date} onChange={setDate} type="date" />
-          <Field label="Время" value={time} onChange={setTime} type="time" />
-          <Field label="Марка машины" value={car} onChange={setCar} />
-          <Field label="Свободных мест" value={seats} onChange={setSeats} type="number" />
+          <AnimatedField index={0} label="Имя" value={name} onChange={setName} />
+          <AnimatedField index={1} label="Телефон" value={phone} onChange={setPhone} />
+          <AnimatedField index={2} label="Откуда" value={from} onChange={setFrom} />
+          <AnimatedField index={3} label="Куда" value={to} onChange={setTo} />
+          <AnimatedField index={4} label="Дата" value={date} onChange={setDate} type="date" />
+          <AnimatedField index={5} label="Время" value={time} onChange={setTime} type="time" />
+          <AnimatedField index={6} label="Марка машины" value={car} onChange={setCar} />
+          <AnimatedField index={7} label="Свободных мест" value={seats} onChange={setSeats} type="number" />
 
-          <div className="flex items-center gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.3 }}
+            className="flex items-center gap-4"
+          >
             <Label className="flex items-center gap-2 text-white/80 text-sm">
               <Checkbox
                 checked={luggage}
@@ -92,33 +97,45 @@ export default function DriverForm() {
               />
               Возможна посылка
             </Label>
-          </div>
+          </motion.div>
 
-          <Button
-            className="w-full bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold text-base py-3 rounded-2xl"
-            type="submit"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6, duration: 0.3 }}
           >
-            Добавить
-          </Button>
+            <Button
+              className="w-full bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold text-base py-3 rounded-2xl"
+              type="submit"
+            >
+              Добавить
+            </Button>
+          </motion.div>
         </form>
       </motion.div>
     </main>
   );
 }
 
-function Field({
+function AnimatedField({
   label,
   value,
   onChange,
   type = "text",
+  index,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
+  index: number;
 }) {
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05, duration: 0.3 }}
+    >
       <Label className="text-white/80 text-sm">{label}</Label>
       <Input
         type={type}
@@ -127,6 +144,6 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         required
       />
-    </div>
+    </motion.div>
   );
 }
