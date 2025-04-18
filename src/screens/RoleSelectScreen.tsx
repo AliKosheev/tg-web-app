@@ -30,30 +30,25 @@ export default function RoleSelectScreen() {
       {/* Сетка точек */}
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
 
-      {/* Светящееся пятно позади аватара */}
-      {user?.id && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.4, scale: 1 }}
-          transition={{ duration: 1 }}
-          className="absolute top-14 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-gradient-to-tr from-indigo-500 via-violet-600 to-indigo-900 blur-3xl z-0 animate-pulse"
-        />
-      )}
+      {/* Glow и Аватар */}
+{(
+  <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10">
+    {/* Фоновое свечение */}
+    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500 via-violet-700 to-indigo-900 blur-3xl opacity-40 animate-pulse scale-125" />
 
-      {/* Аватар пользователя или fallback */}
-      <motion.img
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2 }}
-        src={
-          avatarError || !user?.id
-            ? "/fallback-avatar.png"
-            : `https://t.me/i/userpic/320/${user.id}.jpg`
-        }
-        alt="avatar"
-        onError={() => setAvatarError(true)}
-        className="absolute top-24 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full border-4 border-white/20 shadow-xl z-10 object-cover"
-      />
+    {/* Аватар */}
+    <img
+      src={
+        avatarError || !user?.id
+          ? "/fallback-avatar.png"
+          : `https://t.me/i/userpic/320/${user.id}.jpg`
+      }
+      onError={() => setAvatarError(true)}
+      className="relative w-56 h-56 rounded-full border-4 border-white/10 object-cover shadow-2xl"
+      alt="avatar"
+    />
+  </div>
+)}
 
       {/* Контент */}
       <motion.div
