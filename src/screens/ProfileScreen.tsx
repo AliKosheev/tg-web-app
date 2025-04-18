@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import TopBar from "@/components/TopBar";
+import TopBar from "@/components/ui/TopBar";
 import DotsGrid from "@/components/ui/dots-grid";
 
 export default function ProfileScreen() {
