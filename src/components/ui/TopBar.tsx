@@ -16,7 +16,7 @@ export default function TopBar({
           <img
             src="/icons/arrow-left.svg"
             alt="Назад"
-            className="w-6 h-6 invert"
+            className="w-6 h-6 filter invert"
           />
         </button>
       ) : <div className="w-6" />}
@@ -26,7 +26,7 @@ export default function TopBar({
           <img
             src="/icons/profile.svg"
             alt="Профиль"
-            className="w-6 h-6 invert"
+            className="w-6 h-6 filter invert"
           />
         </button>
       ) : <div className="w-6" />}
