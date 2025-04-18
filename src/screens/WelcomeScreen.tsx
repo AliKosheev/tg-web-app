@@ -52,15 +52,19 @@ export default function WelcomeScreen() {
       </div>
 
       {/* Кнопка */}
-      <motion.button
-        onClick={handleStart}
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-white text-black font-semibold text-lg rounded-2xl px-10 py-3 z-10"
+        className="w-full flex justify-center"
       >
-        Поехали
-      </motion.button>
+        <button
+          onClick={handleStart}
+          className="w-[90%] max-w-sm py-3 px-6 bg-white text-black font-semibold rounded-2xl text-lg shadow-md hover:bg-white/90 transition"
+        >
+          Поехали
+        </button>
+      </motion.div>
     </main>
   );
 }
