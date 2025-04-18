@@ -23,11 +23,13 @@ export default function DriverForm() {
   const [luggage, setLuggage] = useState(false);
   const [parcel, setParcel] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
-      await api.post("/rides", {
+  
+    const tg = window.Telegram.WebApp;
+  
+    if (tg?.sendData) {
+      tg.sendData(JSON.stringify({
         from,
         to,
         date,
@@ -35,16 +37,10 @@ export default function DriverForm() {
         name,
         phone,
         car,
-        seats: parseInt(seats),
+        seats,
         luggage,
         parcel,
-      });
-
-      alert("Поездка добавлена!");
-      navigate("/");
-    } catch (error) {
-      console.error("Ошибка:", error);
-      alert("Ошибка при отправке данных.");
+      }));
     }
   };
 
