@@ -3,8 +3,8 @@ import { AnimatePresence } from "framer-motion";
 import DriverForm from "./screens/DriverForm";
 import PassengerScreen from "./screens/PassengerScreen";
 import RoleSelectScreen from "./screens/RoleSelectScreen";
+import ProfileScreen from "./screens/ProfileScreen"; // ✅
 
-// Обёртка для анимируемых переходов
 function AnimatedRoutes() {
   const location = useLocation();
 
@@ -14,6 +14,7 @@ function AnimatedRoutes() {
         <Route path="/" element={<RoleSelectScreen />} />
         <Route path="/driver" element={<DriverForm />} />
         <Route path="/passenger" element={<PassengerScreen />} />
+        <Route path="/profile" element={<ProfileScreen />} /> {/* ✅ */}
       </Routes>
     </AnimatePresence>
   );

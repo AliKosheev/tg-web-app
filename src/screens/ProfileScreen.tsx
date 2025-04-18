@@ -34,11 +34,11 @@ export default function ProfileScreen() {
           <h3 className="text-lg font-semibold mb-3">Мои поездки</h3>
           <ul className="space-y-2 text-sm">
             <li className="flex justify-between">
-              <span>Нальчик ➔ Москва</span>
+              <span>Нальчик → Москва</span>
               <span className="text-white/50">20.04</span>
             </li>
             <li className="flex justify-between">
-              <span>Москва ➔ Нальчик</span>
+              <span>Москва → Нальчик</span>
               <span className="text-white/50">22.04</span>
             </li>
           </ul>
@@ -52,7 +52,9 @@ export default function ProfileScreen() {
 
         {/* Кнопки */}
         <div className="w-full flex flex-col gap-3">
-          <Button variant="secondary" className="w-full bg-white/10 text-white">
+          <Button
+            className="w-full bg-white/10 text-white hover:bg-white/20 transition"
+          >
             Очистить данные
           </Button>
           <Button variant="ghost" className="text-sm text-white/50">
