@@ -52,12 +52,10 @@ export default function ProfileScreen() {
         <div className="w-full bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
           <button className="w-full text-left px-4 py-4 flex justify-between items-center">
             <span>Очистить данные</span>
-            <img src="/icons/arrow-right.svg" alt="→" className="w-4 h-4 opacity-50" />
           </button>
           <hr className="border-white/10" />
           <button className="w-full text-left px-4 py-4 flex justify-between items-center">
             <span>Написать в поддержку</span>
-            <img src="/icons/arrow-right.svg" alt="→" className="w-4 h-4 opacity-50" />
           </button>
         </div>
       </div>
