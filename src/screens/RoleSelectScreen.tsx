@@ -1,21 +1,27 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import DotsGrid from "@/components/ui/dots-grid";
 import { motion } from "framer-motion";
 
 export default function RoleSelectScreen() {
   const navigate = useNavigate();
+  const [user, setUser] = useState<any>(null);
+  const [avatarError, setAvatarError] = useState(false);
 
-  const tg = (window as any).Telegram?.WebApp;
-  tg?.ready(); // инициализация Telegram WebApp
-  const user = tg?.initDataUnsafe?.user;
-
-  console.log("TG user:", user);
+  useEffect(() => {
+    const tg = (window as any).Telegram?.WebApp;
+    if (tg) {
+      tg.ready(); // Инициализация WebApp
+      setUser(tg.initDataUnsafe?.user);
+    }
+  }, []);
 
   const handleClick = (path: string) => {
-    // Вибрация
+    const tg = (window as any).Telegram?.WebApp;
+
+    // Вибрация при нажатии (если поддерживается)
     tg?.HapticFeedback?.impactOccurred?.("light");
 
-    // Навигация
     navigate(path);
   };
 
@@ -34,20 +40,20 @@ export default function RoleSelectScreen() {
         />
       )}
 
-      {/* Аватар пользователя */}
-      {user?.id && (
-        <motion.img
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-          src={`https://t.me/i/userpic/320/${user.id}.jpg`}
-          alt="avatar"
-          className="absolute top-24 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full border-4 border-white/20 shadow-xl z-10 object-cover"
-          onError={(e) =>
-            ((e.target as HTMLImageElement).src = "/fallback-avatar.png")
-          }
-        />
-      )}
+      {/* Аватар пользователя или fallback */}
+      <motion.img
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        src={
+          avatarError || !user?.id
+            ? "/fallback-avatar.png"
+            : `https://t.me/i/userpic/320/${user.id}.jpg`
+        }
+        alt="avatar"
+        onError={() => setAvatarError(true)}
+        className="absolute top-24 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full border-4 border-white/20 shadow-xl z-10 object-cover"
+      />
 
       {/* Контент */}
       <motion.div
