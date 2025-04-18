@@ -60,7 +60,7 @@ export default function WelcomeScreen() {
       >
         <button
           onClick={handleStart}
-          className="w-[90%] max-w-sm py-3 px-6 bg-white text-black font-semibold rounded-2xl text-lg shadow-md hover:bg-white/90 transition"
+          className="w-[90%] max-w-sm py-3 px-6 bg-white text-black font-semibold rounded-2xl text-lg shadow-md hover:bg-white/90 transition z-10"
         >
           Поехали
         </button>
