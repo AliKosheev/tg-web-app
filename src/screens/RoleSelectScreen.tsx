@@ -4,7 +4,12 @@ import { motion } from "framer-motion";
 
 export default function RoleSelectScreen() {
   const navigate = useNavigate();
-  const user = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
+
+  const tg = (window as any).Telegram?.WebApp;
+  tg?.ready(); // инициализация WebApp
+  const user = tg?.initDataUnsafe?.user;
+
+  console.log("TG user:", user);
 
   return (
     <main className="relative h-[100dvh] w-full flex flex-col items-center justify-end px-4 pb-10 pt-20 bg-black text-white overflow-hidden">
@@ -30,6 +35,9 @@ export default function RoleSelectScreen() {
           src={`https://t.me/i/userpic/320/${user.id}.jpg`}
           alt="avatar"
           className="absolute top-24 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full border-4 border-white/20 shadow-xl z-10 object-cover"
+          onError={(e) =>
+            ((e.target as HTMLImageElement).src = "/fallback-avatar.png")
+          }
         />
       )}
 
