@@ -21,7 +21,20 @@ export default function DriverForm() {
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
       <TopBar />
 
-      <div className="relative z-10 mt-16 max-w-md mx-auto w-full p-4 rounded-3xl border border-white/10 bg-black/30 backdrop-blur-xl shadow-xl">
+      {/* Градиент под кнопкой */}
+      <div className="absolute bottom-0 left-0 right-0 z-0 h-32 bg-gradient-to-t from-violet-800 via-indigo-900 to-transparent blur-3xl opacity-40" />
+
+      {/* Кнопка */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-full max-w-md px-4">
+        <div className="rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-700 p-[1px] shadow-xl shadow-violet-500/20">
+          <button className="w-full py-3 text-white text-base font-semibold rounded-2xl bg-black/80 hover:bg-black/70 transition">
+            Добавить
+          </button>
+        </div>
+      </div>
+
+      {/* Форма */}
+      <div className="relative z-20 mt-16 max-w-md mx-auto w-full p-4 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl">
         <h1 className="text-2xl font-bold text-center mb-4">Водитель</h1>
 
         <form className="space-y-3">
@@ -37,9 +50,9 @@ export default function DriverForm() {
           <div className="pt-2 space-y-2">
             <label className="flex items-center gap-2">
               <span
-                className={`w-4 h-4 rounded-full border-2 ${
+                className={`w-4 h-4 rounded-full border-2 transition shadow-sm shadow-blue-500/40 ${
                   luggage ? "border-blue-500 bg-blue-500" : "border-white/30"
-                } transition`}
+                }`}
                 onClick={() => setLuggage(!luggage)}
               />
               <span>Место для багажа</span>
@@ -47,24 +60,15 @@ export default function DriverForm() {
 
             <label className="flex items-center gap-2">
               <span
-                className={`w-4 h-4 rounded-full border-2 ${
+                className={`w-4 h-4 rounded-full border-2 transition shadow-sm shadow-blue-500/40 ${
                   parcel ? "border-blue-500 bg-blue-500" : "border-white/30"
-                } transition`}
+                }`}
                 onClick={() => setParcel(!parcel)}
               />
               <span>Возможна посылка</span>
             </label>
           </div>
         </form>
-      </div>
-
-      {/* Кнопка */}
-      <div className="absolute bottom-4 left-4 right-4 z-20">
-        <div className="rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-700 p-[1px]">
-          <button className="w-full py-3 text-white text-base font-semibold rounded-2xl bg-black hover:bg-black/90">
-            Добавить
-          </button>
-        </div>
       </div>
     </main>
   );
