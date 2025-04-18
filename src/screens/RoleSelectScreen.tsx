@@ -6,7 +6,7 @@ export default function RoleSelectScreen() {
   const navigate = useNavigate();
 
   return (
-<main className="relative h-[100dvh] w-full flex flex-col items-center justify-end px-4 pb-10 pt-20 bg-black text-white overflow-hidden">
+<main className="relative h w-full flex flex-col items-center justify-end px-4 pb-10 pt-20 bg-black text-white overflow-hidden">
           {/* Сетка точек на фоне */}
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
 
