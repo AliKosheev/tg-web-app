@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
-import TopBar from "@/components/ui/TopBar";
 import DotsGrid from "@/components/ui/dots-grid";
+import TopBar from "@/components/ui/TopBar";
 
 export default function DriverForm() {
   const navigate = useNavigate();
@@ -29,58 +31,57 @@ export default function DriverForm() {
   };
 
   return (
-    <main className="relative min-h-screen bg-black text-white px-4 py-6 overflow-hidden">
+    <main className="relative min-h-screen bg-black text-white px-4 pb-24 pt-6 overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
       <TopBar />
 
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-indigo-900/40 via-indigo-800/20 to-transparent blur-3xl z-0 pointer-events-none" />
+      <div className="relative z-10 max-w-md mx-auto">
+        <div className="rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 pt-4 shadow-xl">
+          <h1 className="text-center text-2xl font-bold mb-6">Водитель</h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="relative z-10 max-w-md mx-auto w-full p-6 pt-4 pb-10 mt-6 space-y-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md"
-      >
-        <h1 className="text-center text-2xl font-bold">Водитель</h1>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Field label="Имя" value={name} onChange={setName} />
+            <Field label="Телефон" value={phone} onChange={setPhone} />
+            <Field label="Откуда" value={from} onChange={setFrom} />
+            <Field label="Куда" value={to} onChange={setTo} />
+            <Field label="Дата" value={date} onChange={setDate} type="date" />
+            <Field label="Время" value={time} onChange={setTime} type="time" />
+            <Field label="Марка машины" value={car} onChange={setCar} />
+            <Field label="Свободных мест" value={seats} onChange={setSeats} type="number" />
 
-        <Field label="Имя" value={name} onChange={setName} />
-        <Field label="Телефон" value={phone} onChange={setPhone} />
-        <Field label="Откуда" value={from} onChange={setFrom} />
-        <Field label="Куда" value={to} onChange={setTo} />
-        <Field label="Дата" value={date} onChange={setDate} type="date" />
-        <Field label="Время" value={time} onChange={setTime} type="time" />
-        <Field label="Марка машины" value={car} onChange={setCar} />
-        <Field label="Свободных мест" value={seats} onChange={setSeats} type="number" />
-
-        <div className="flex flex-col gap-2 pt-2">
-          <label className="flex items-center gap-2 text-sm text-white">
-            <span
-              className={`w-4 h-4 rounded-full border border-white/30 transition shadow-md ${
-                luggage ? "bg-blue-500 shadow-blue-500/50" : "bg-black"
-              }`}
-              onClick={() => setLuggage(!luggage)}
-            />
-            Место для багажа
-          </label>
-          <label className="flex items-center gap-2 text-sm text-white">
-            <span
-              className={`w-4 h-4 rounded-full border border-white/30 transition shadow-md ${
-                parcel ? "bg-blue-500 shadow-blue-500/50" : "bg-black"
-              }`}
-              onClick={() => setParcel(!parcel)}
-            />
-            Возможна посылка
-          </label>
+            <div className="flex flex-col gap-2 pt-2">
+              <label className="flex items-center gap-3 text-white">
+                <Checkbox
+                  className="data-[state=checked]:ring-2 data-[state=checked]:ring-blue-500 data-[state=checked]:bg-blue-500"
+                  checked={luggage}
+                  onCheckedChange={(val) => setLuggage(Boolean(val))}
+                />
+                Место для багажа
+              </label>
+              <label className="flex items-center gap-3 text-white">
+                <Checkbox
+                  className="data-[state=checked]:ring-2 data-[state=checked]:ring-blue-500 data-[state=checked]:bg-blue-500"
+                  checked={parcel}
+                  onCheckedChange={(val) => setParcel(Boolean(val))}
+                />
+                Возможна посылка
+              </label>
+            </div>
+          </form>
         </div>
-      </form>
 
-      <div className="relative z-0 max-w-md mx-auto w-full px-6 -mt-10">
-        <motion.button
-          whileTap={{ scale: 0.97 }}
-          type="submit"
-          form="form"
-          className="w-full rounded-2xl py-3 font-semibold text-lg text-white bg-gradient-to-r from-violet-500 to-indigo-600 shadow-lg border border-white/10"
-        >
-          Добавить
-        </motion.button>
+        {/* Кнопка под плашкой */}
+        <div className="relative z-0 -mt-6 flex justify-center">
+          <motion.button
+            type="submit"
+            onClick={handleSubmit}
+            className="w-[90%] rounded-2xl py-3 font-semibold text-white bg-gradient-to-r from-indigo-500 to-violet-600 shadow-xl"
+            style={{ boxShadow: "0 0 30px 10px rgba(128, 90, 213, 0.4)" }}
+            whileTap={{ scale: 0.97 }}
+          >
+            Добавить
+          </motion.button>
+        </div>
       </div>
     </main>
   );
@@ -102,7 +103,7 @@ function Field({
       <Label className="text-white/80 text-sm mb-1 block">{label}</Label>
       <Input
         type={type}
-        className="bg-black/40 border border-white/10 text-white placeholder:text-white/30 focus:ring-1 focus:ring-indigo-500"
+        className="bg-black/80 border border-white/10 text-white placeholder:text-white/40 focus:ring-1 focus:ring-indigo-500"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required
