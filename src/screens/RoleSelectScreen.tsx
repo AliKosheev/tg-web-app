@@ -30,25 +30,22 @@ export default function RoleSelectScreen() {
       {/* Сетка точек */}
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
 
-      {/* Glow и Аватар */}
-{(
-  <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10">
-    {/* Фоновое свечение */}
-    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500 via-violet-700 to-indigo-900 blur-3xl opacity-40 animate-pulse scale-125" />
+      <div className="absolute top-28 left-1/2 -translate-x-1/2 z-10">
+  {/* Фоновое свечение */}
+  <div className="absolute inset-0 w-56 h-56 rounded-full bg-gradient-to-br from-indigo-500 via-violet-700 to-indigo-900 blur-3xl opacity-30 animate-pulse scale-125" />
 
-    {/* Аватар */}
-    <img
-      src={
-        avatarError || !user?.id
-          ? "/fallback-avatar.png"
-          : `https://t.me/i/userpic/320/${user.id}.jpg`
-      }
-      onError={() => setAvatarError(true)}
-      className="relative w-56 h-56 rounded-full border-4 border-white/10 object-cover shadow-2xl"
-      alt="avatar"
-    />
-  </div>
-)}
+  {/* Аватар */}
+  <img
+    src={
+      avatarError || !user?.id
+        ? "/fallback-avatar.png"
+        : `https://t.me/i/userpic/320/${user.id}.jpg`
+    }
+    onError={() => setAvatarError(true)}
+    alt="avatar"
+    className="relative w-56 h-56 rounded-full object-cover z-10"
+  />
+</div>
 
       {/* Контент */}
       <motion.div
