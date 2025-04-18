@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useNavigate } from "react-router-dom";
 import TopBar from "@/components/ui/TopBar";
 import DotsGrid from "@/components/ui/dots-grid";
 
 export default function DriverForm() {
+  const navigate = useNavigate();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
@@ -19,40 +19,15 @@ export default function DriverForm() {
   const [luggage, setLuggage] = useState(false);
   const [parcel, setParcel] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg?.sendData) {
-      tg.sendData(
-        JSON.stringify({
-          from,
-          to,
-          date,
-          time,
-          car,
-          seats,
-          name,
-          phone,
-          luggage,
-          parcel,
-        })
-      );
-    }
-  };
-
   return (
-    <main className="relative min-h-screen bg-black text-white px-4 py-6 flex items-start justify-center overflow-hidden">
+    <main className="relative min-h-screen bg-black text-white px-4 pt-4 pb-28 overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
-      <TopBar showBack={true} showProfile={true} />
+      <TopBar />
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg p-6 shadow-lg space-y-4 mt-12"
-      >
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="relative z-10 mt-16 max-w-md mx-auto w-full p-4 rounded-3xl border border-white/10 bg-black/30 backdrop-blur-xl shadow-xl">
+        <h1 className="text-2xl font-bold text-center mb-4">Водитель</h1>
+
+        <form className="space-y-3">
           <Field label="Имя" value={name} onChange={setName} />
           <Field label="Телефон" value={phone} onChange={setPhone} />
           <Field label="Откуда" value={from} onChange={setFrom} />
@@ -62,31 +37,38 @@ export default function DriverForm() {
           <Field label="Марка машины" value={car} onChange={setCar} />
           <Field label="Свободных мест" value={seats} onChange={setSeats} type="number" />
 
-          <div className="flex items-center gap-4">
-            <Label className="flex items-center gap-2 text-white/80 text-sm">
-              <Checkbox
-                checked={luggage}
-                onCheckedChange={(val) => setLuggage(Boolean(val))}
+          <div className="pt-2 space-y-2">
+            <label className="flex items-center gap-2">
+              <span
+                className={`w-4 h-4 rounded-full border-2 ${
+                  luggage ? "border-blue-500 bg-blue-500" : "border-white/30"
+                } transition`}
+                onClick={() => setLuggage(!luggage)}
               />
-              Есть багаж
-            </Label>
-            <Label className="flex items-center gap-2 text-white/80 text-sm">
-              <Checkbox
-                checked={parcel}
-                onCheckedChange={(val) => setParcel(Boolean(val))}
-              />
-              Возможна посылка
-            </Label>
-          </div>
+              <span>Место для багажа</span>
+            </label>
 
-          <Button
-            className="w-full bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold text-base py-3 rounded-2xl"
-            type="submit"
-          >
+            <label className="flex items-center gap-2">
+              <span
+                className={`w-4 h-4 rounded-full border-2 ${
+                  parcel ? "border-blue-500 bg-blue-500" : "border-white/30"
+                } transition`}
+                onClick={() => setParcel(!parcel)}
+              />
+              <span>Возможна посылка</span>
+            </label>
+          </div>
+        </form>
+      </div>
+
+      {/* Кнопка */}
+      <div className="absolute bottom-4 left-4 right-4 z-20">
+        <div className="rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-700 p-[1px]">
+          <Button className="w-full py-3 text-white text-base font-semibold rounded-2xl bg-black hover:bg-black/90">
             Добавить
           </Button>
-        </form>
-      </motion.div>
+        </div>
+      </div>
     </main>
   );
 }
@@ -99,15 +81,15 @@ function Field({
 }: {
   label: string;
   value: string;
-  onChange: (v: string) => void;
+  onChange: (val: string) => void;
   type?: string;
 }) {
   return (
     <div>
-      <Label className="text-white/80 text-sm">{label}</Label>
       <Input
         type={type}
-        className="mt-1 bg-white/10 border border-white/10 text-white placeholder:text-white/40 focus:ring-1 focus:ring-indigo-500"
+        placeholder={label}
+        className="bg-white/5 border border-white/10 placeholder:text-white/30 text-white focus:ring-1 focus:ring-violet-500"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required
