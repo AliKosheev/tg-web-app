@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import TopBar from "@/components/ui/TopBar";
 import DotsGrid from "@/components/ui/dots-grid";
@@ -64,9 +61,9 @@ export default function DriverForm() {
       {/* Кнопка */}
       <div className="absolute bottom-4 left-4 right-4 z-20">
         <div className="rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-700 p-[1px]">
-          <Button className="w-full py-3 text-white text-base font-semibold rounded-2xl bg-black hover:bg-black/90">
+          <button className="w-full py-3 text-white text-base font-semibold rounded-2xl bg-black hover:bg-black/90">
             Добавить
-          </Button>
+          </button>
         </div>
       </div>
     </main>
@@ -86,10 +83,10 @@ function Field({
 }) {
   return (
     <div>
-      <Input
+      <input
         type={type}
         placeholder={label}
-        className="bg-white/5 border border-white/10 placeholder:text-white/30 text-white focus:ring-1 focus:ring-violet-500"
+        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-xl placeholder:text-white/30 text-white focus:ring-1 focus:ring-violet-500"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required
