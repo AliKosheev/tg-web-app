@@ -6,10 +6,18 @@ export default function RoleSelectScreen() {
   const navigate = useNavigate();
 
   const tg = (window as any).Telegram?.WebApp;
-  tg?.ready(); // инициализация WebApp
+  tg?.ready(); // инициализация Telegram WebApp
   const user = tg?.initDataUnsafe?.user;
 
   console.log("TG user:", user);
+
+  const handleClick = (path: string) => {
+    // Вибрация
+    tg?.HapticFeedback?.impactOccurred?.("light");
+
+    // Навигация
+    navigate(path);
+  };
 
   return (
     <main className="relative h-[100dvh] w-full flex flex-col items-center justify-end px-4 pb-10 pt-20 bg-black text-white overflow-hidden">
@@ -53,14 +61,14 @@ export default function RoleSelectScreen() {
         </h1>
 
         <button
-          onClick={() => navigate("/driver")}
+          onClick={() => handleClick("/driver")}
           className="w-full py-3 rounded-2xl text-white font-semibold text-base bg-gradient-to-r from-violet-500 to-indigo-600"
         >
           Водитель
         </button>
 
         <button
-          onClick={() => navigate("/passenger")}
+          onClick={() => handleClick("/passenger")}
           className="w-full py-3 rounded-2xl text-white font-semibold text-base bg-gradient-to-r from-indigo-700 to-indigo-900"
         >
           Пассажир
