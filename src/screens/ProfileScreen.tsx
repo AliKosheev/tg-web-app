@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import DotsGrid from "@/components/ui/dots-grid";
-import TopBar from "@/components/TopBar";
+import TopBar from "@/components/ui/TopBar";
 
 export default function ProfileScreen() {
   const [user, setUser] = useState<any>(null);

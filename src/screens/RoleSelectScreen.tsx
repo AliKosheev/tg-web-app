@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DotsGrid from "@/components/ui/dots-grid";
 import { motion } from "framer-motion";
-import TopBar from "@/components/TopBar";
+import TopBar from "@/components/ui/TopBar";
 
 export default function RoleSelectScreen() {
   const navigate = useNavigate();
