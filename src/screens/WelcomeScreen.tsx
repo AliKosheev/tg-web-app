@@ -27,7 +27,7 @@ export default function WelcomeScreen() {
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
 
       <div className="relative z-10 -mt-12 flex flex-col items-center">
-        {/* Текст */}
+        {/* Название */}
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -37,7 +37,7 @@ export default function WelcomeScreen() {
           TRIPLY
         </motion.h1>
 
-        {/* Аватар с подсветкой */}
+        {/* Аватар */}
         <div className="relative mb-10">
           <div className="absolute inset-0 w-56 h-56 rounded-full bg-gradient-to-br from-indigo-500 via-violet-700 to-indigo-900 blur-3xl opacity-30 animate-pulse scale-125" />
           <img
@@ -62,7 +62,7 @@ export default function WelcomeScreen() {
       >
         <button
           onClick={handleStart}
-          className="w-[90%] max-w-sm py-3 px-6 bg-white text-black font-semibold rounded-2xl text-lg shadow-md hover:bg-white/90 transition"
+          className="w-[90%] max-w-sm py-3 px-6 bg-white text-black font-semibold rounded-2xl text-lg shadow-md hover:bg-white/90 transition z-10"
         >
           Поехали
         </button>
