@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import api from "@/lib/api";
 import DotsGrid from "@/components/ui/dots-grid";
 
 export default function DriverForm() {
@@ -25,22 +24,24 @@ export default function DriverForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
-    const tg = window.Telegram.WebApp;
-  
+
+    const tg = (window as any).Telegram?.WebApp;
+
     if (tg?.sendData) {
-      tg.sendData(JSON.stringify({
-        from,
-        to,
-        date,
-        time,
-        name,
-        phone,
-        car,
-        seats,
-        luggage,
-        parcel,
-      }));
+      tg.sendData(
+        JSON.stringify({
+          from,
+          to,
+          date,
+          time,
+          name,
+          phone,
+          car,
+          seats,
+          luggage,
+          parcel,
+        })
+      );
     }
   };
 
