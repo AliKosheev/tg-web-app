@@ -38,7 +38,7 @@ export default function WelcomeScreen() {
         </motion.h1>
 
         {/* Аватар */}
-        <div className="relative mb-10">
+        <div className="relative mb-50">
           <div className="absolute inset-0 w-56 h-56 rounded-full bg-gradient-to-br from-indigo-500 via-violet-700 to-indigo-900 blur-3xl opacity-30 animate-pulse scale-125" />
           <img
             src={
