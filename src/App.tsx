@@ -3,7 +3,8 @@ import { AnimatePresence } from "framer-motion";
 import DriverForm from "./screens/DriverForm";
 import PassengerScreen from "./screens/PassengerScreen";
 import RoleSelectScreen from "./screens/RoleSelectScreen";
-import ProfileScreen from "./screens/ProfileScreen"; // ✅
+import ProfileScreen from "./screens/ProfileScreen";
+import WelcomeScreen from "./screens/WelcomeScreen"; // ✅ новый импорт
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -11,10 +12,11 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<RoleSelectScreen />} />
+        <Route path="/" element={<WelcomeScreen />} /> {/* ✅ стартовый экран */}
+        <Route path="/select" element={<RoleSelectScreen />} />
         <Route path="/driver" element={<DriverForm />} />
         <Route path="/passenger" element={<PassengerScreen />} />
-        <Route path="/profile" element={<ProfileScreen />} /> {/* ✅ */}
+        <Route path="/profile" element={<ProfileScreen />} />
       </Routes>
     </AnimatePresence>
   );
