@@ -43,11 +43,31 @@ export default function ProfileScreen() {
         </h2>
 
         {/* Карточки */}
-        <div className="w-full flex flex-col gap-4">
-          <GlassCard title="Мои поездки" />
-          <GlassCard title="Мои отклики" />
-        </div>
-      </div>
+        {/* Панель 1: Мои поездки / Мои отклики */}
+<div className="w-full bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
+  <button className="w-full text-left px-4 py-4 flex justify-between items-center">
+    <span>Мои поездки</span>
+    <img src="/icons/arrow-right.svg" alt="→" className="w-4 h-4 opacity-50" />
+  </button>
+  <hr className="border-white/10" />
+  <button className="w-full text-left px-4 py-4 flex justify-between items-center">
+    <span>Мои отклики</span>
+    <img src="/icons/arrow-right.svg" alt="→" className="w-4 h-4 opacity-50" />
+  </button>
+</div>
+
+{/* Панель 2: Очистить данные / Поддержка */}
+<div className="w-full bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
+  <button className="w-full text-left px-4 py-4 flex justify-between items-center">
+    <span>Очистить данные</span>
+    <img src="/icons/arrow-right.svg" alt="→" className="w-4 h-4 opacity-50" />
+  </button>
+  <hr className="border-white/10" />
+  <button className="w-full text-left px-4 py-4 flex justify-between items-center">
+    <span>Написать в поддержку</span>
+    <img src="/icons/arrow-right.svg" alt="→" className="w-4 h-4 opacity-50" />
+  </button>
+</div>
     </main>
   );
 }
