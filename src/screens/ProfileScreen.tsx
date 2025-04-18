@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import DotsGrid from "@/components/ui/dots-grid";
+import TopBar from "@/components/TopBar";
 
 export default function ProfileScreen() {
   const [user, setUser] = useState<any>(null);
@@ -14,9 +14,14 @@ export default function ProfileScreen() {
 
   return (
     <main className="relative min-h-screen bg-black text-white px-4 py-8 overflow-hidden">
+      {/* Сетка точек */}
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
 
-      <div className="relative z-10 max-w-md mx-auto flex flex-col items-center gap-6">
+      {/* Хедер */}
+      <TopBar showBack={true} showProfile={false} />
+
+      {/* Контент */}
+      <div className="relative z-10 max-w-md mx-auto flex flex-col items-center gap-6 mt-12">
         {/* Аватар и имя */}
         <div className="flex flex-col items-center gap-2">
           <img
@@ -52,9 +57,7 @@ export default function ProfileScreen() {
 
         {/* Кнопки */}
         <div className="w-full flex flex-col gap-3">
-          <Button
-            className="w-full bg-white/10 text-white hover:bg-white/20 transition"
-          >
+          <Button className="w-full bg-white/10 text-white hover:bg-white/20 transition">
             Очистить данные
           </Button>
           <Button variant="ghost" className="text-sm text-white/50">
