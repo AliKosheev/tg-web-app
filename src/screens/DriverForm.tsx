@@ -44,7 +44,7 @@ export default function DriverForm() {
   return (
     <main className="relative min-h-screen bg-black text-white px-4 py-6 flex items-start justify-center overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
-      <TopBar showBack={true} showProfile={false} />
+      <TopBar showBack={true} showProfile={true} />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
