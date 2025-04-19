@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import TopBar from "@/components/ui/TopBar";
+import DotsGrid from "@/components/ui/dots-grid";
 
 export default function DriverForm() {
   const [from, setFrom] = useState("");
@@ -21,8 +21,8 @@ export default function DriverForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const tg = (window as any)?.Telegram?.WebApp;
-    
+    const tg = typeof window !== "undefined" ? (window as any).Telegram?.WebApp : undefined;
+
     if (tg?.sendData) {
       tg.sendData(
         JSON.stringify({
@@ -43,10 +43,11 @@ export default function DriverForm() {
 
   return (
     <main className="relative min-h-screen bg-black text-white px-4 pt-8 pb-28 overflow-hidden">
-      <TopBar />
+      <DotsGrid className="absolute inset-0 z-0 opacity-30" />
+      <TopBar showBack={true} showProfile={true} />
 
       {/* Светящийся фон под кнопкой */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[280px] h-10 bg-gradient-to-r from-violet-500 to-indigo-600 blur-2xl opacity-80 z-0" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-10 bg-gradient-to-r from-violet-500 to-indigo-600 blur-2xl opacity-70 z-0" />
 
       <div className="relative z-10 w-full max-w-md mx-auto mt-16 rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md p-6 shadow-xl">
         <h1 className="text-2xl font-bold text-center mb-6">Водитель</h1>
@@ -86,7 +87,7 @@ export default function DriverForm() {
         <Button
           type="submit"
           onClick={handleSubmit}
-          className="w-[280px] bg-gradient-to-r from-violet-500 to-indigo-600 text-white font-semibold py-3 rounded-2xl shadow-xl"
+          className="w-[90%] bg-gradient-to-r from-violet-500 to-indigo-600 text-white font-semibold py-3 rounded-2xl shadow-xl"
         >
           Добавить
         </Button>
