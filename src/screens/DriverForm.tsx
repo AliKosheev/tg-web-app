@@ -100,7 +100,7 @@ function Checkbox({ label, checked, onChange }: {
         onClick={() => onChange(!checked)}
         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all ${checked ? 'border-blue-500 bg-blue-500 shadow-[0_0_10px_rgba(99,102,241,0.8)]' : 'border-white/30 bg-transparent'}`}
       >
-        {checked && <div className="w-2 h-2 rounded-full bg-white" />}
+        {checked && <div className="w-2 h-2 rounded-full " />}
       </span>
       {label}
     </label>
