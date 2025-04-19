@@ -42,14 +42,11 @@ export default function DriverForm() {
   };
 
   return (
-    <main className="relative min-h-screen bg-black text-white px-4 pt-8 pb-28 overflow-hidden">
+    <main className="relative min-h-screen bg-black text-white px-4 pt-8 pb-32 overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
       <TopBar showBack={true} showProfile={true} />
 
-      {/* Светящийся фон под кнопкой */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-10 bg-gradient-to-r from-violet-500 to-indigo-600 blur-2xl opacity-70 z-0" />
-
-      <div className="relative z-10 w-full max-w-md mx-auto mt-16 rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md p-6 shadow-xl">
+      <div className="relative z-10 w-full max-w-md mx-auto mt-24 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-xl">
         <h1 className="text-2xl font-bold text-center mb-6">Водитель</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -67,7 +64,7 @@ export default function DriverForm() {
               <Checkbox
                 checked={luggage}
                 onCheckedChange={(val) => setLuggage(Boolean(val))}
-                className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500 shadow-lg"
+                className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500 shadow-blue-500 shadow-md"
               />
               Место для багажа
             </Label>
@@ -75,7 +72,7 @@ export default function DriverForm() {
               <Checkbox
                 checked={parcel}
                 onCheckedChange={(val) => setParcel(Boolean(val))}
-                className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500 shadow-lg"
+                className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500 shadow-blue-500 shadow-md"
               />
               Возможна посылка
             </Label>
@@ -83,11 +80,13 @@ export default function DriverForm() {
         </form>
       </div>
 
-      <div className="relative z-0 flex justify-center mt-6">
+      {/* Кнопка с подсветкой снизу */}
+      <div className="relative z-0 flex justify-center mt-4">
+        <div className="absolute bottom-3 w-[90%] h-10 rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-600 blur-2xl opacity-80 z-0" />
         <Button
           type="submit"
           onClick={handleSubmit}
-          className="w-[90%] bg-gradient-to-r from-violet-500 to-indigo-600 text-white font-semibold py-3 rounded-2xl shadow-xl"
+          className="relative z-10 w-[90%] bg-gradient-to-r from-violet-500 to-indigo-600 text-white font-semibold py-3 rounded-2xl"
         >
           Добавить
         </Button>
