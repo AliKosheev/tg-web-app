@@ -33,7 +33,7 @@ export default function DriverForm() {
     }
 
     setShowSuccess(true);
-
+  };
 
   return (
     <main className="relative min-h-screen bg-black text-white px-4 pt-6 pb-20 overflow-hidden">
