@@ -10,14 +10,8 @@ export default function ProfileScreen() {
     const tg = (window as any).Telegram?.WebApp;
     tg?.ready();
   
-    console.log("initDataUnsafe", tg?.initDataUnsafe);
-  
-    if (tg?.initDataUnsafe?.user) {
-      setUser(tg.initDataUnsafe.user);
-    } else {
-      // fallback, если WebApp открыт напрямую
-      alert("Пожалуйста, откройте Triply через Telegram-бота 📲");
-    }
+    console.log("tg.initDataUnsafe:", tg?.initDataUnsafe); // 👈 Добавляем лог
+    setUser(tg?.initDataUnsafe?.user);
   }, []);
 
   const displayName = user?.username
