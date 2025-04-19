@@ -12,6 +12,10 @@ export default function ProfileScreen() {
     setUser(tg?.initDataUnsafe?.user);
   }, []);
 
+  const displayName = user?.username
+    ? `@${user.username}`
+    : `${user?.first_name || "Пользователь"} ${user?.last_name || ""}`;
+
   return (
     <main className="relative min-h-screen bg-black text-white px-4 py-6 overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
@@ -22,16 +26,16 @@ export default function ProfileScreen() {
         <div className="flex flex-col items-center gap-2">
           <img
             src={
-              avatarError || !user?.id
+              avatarError || !user?.photo_url
                 ? "/fallback-avatar.png"
-                : `https://t.me/i/userpic/320/${user.id}.jpg`
+                : user.photo_url
             }
             onError={() => setAvatarError(true)}
             className="w-28 h-28 rounded-full object-cover border border-white/10"
             alt="avatar"
           />
-          <h2 className="text-xl font-semibold">
-            {user?.username || "Пользователь"}
+          <h2 className="text-xl font-semibold text-center">
+            {displayName}
           </h2>
         </div>
 
