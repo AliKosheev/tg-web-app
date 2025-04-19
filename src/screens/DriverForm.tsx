@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import TopBar from "@/components/ui/TopBar";
-import DotsGrid from "@/components/ui/dots-grid";
 
 export default function DriverForm() {
   const [from, setFrom] = useState("");
@@ -22,26 +21,35 @@ export default function DriverForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const tg = (window as any).Telegram?.WebApp;
+    const tg = window.Telegram.WebApp;
+
     if (tg?.sendData) {
       tg.sendData(
-        JSON.stringify({ from, to, date, time, name, phone, car, seats, luggage, parcel })
+        JSON.stringify({
+          from,
+          to,
+          date,
+          time,
+          name,
+          phone,
+          car,
+          seats,
+          luggage,
+          parcel,
+        })
       );
     }
   };
 
   return (
-    <main className="relative min-h-screen bg-black text-white px-4 pb-10 pt-4 overflow-hidden">
-      <DotsGrid className="absolute inset-0 z-0 opacity-30" />
-      <TopBar showBack={true} showProfile={true} />
+    <main className="relative min-h-screen bg-black text-white px-4 pt-8 pb-28 overflow-hidden">
+      <TopBar />
 
-      {/* Кнопка под плашкой (визуально снизу) */}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center z-0">
-        <div className="w-[90%] h-10 rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-600 blur-2xl opacity-50"></div>
-      </div>
+      {/* Светящийся фон под кнопкой */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[280px] h-10 bg-gradient-to-r from-violet-500 to-indigo-600 blur-2xl opacity-80 z-0" />
 
-      <div className="relative z-10 w-full max-w-md mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 space-y-5">
-        <h2 className="text-center text-2xl font-bold">Водитель</h2>
+      <div className="relative z-10 w-full max-w-md mx-auto mt-16 rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md p-6 shadow-xl">
+        <h1 className="text-2xl font-bold text-center mb-6">Водитель</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Field label="Имя" value={name} onChange={setName} />
@@ -53,43 +61,35 @@ export default function DriverForm() {
           <Field label="Марка машины" value={car} onChange={setCar} />
           <Field label="Свободных мест" value={seats} onChange={setSeats} type="number" />
 
-          <div className="flex flex-col gap-3 pt-1">
-            <label className="flex items-center gap-3 text-white">
-              <span
-                className={`w-4 h-4 rounded-full border border-white transition-all duration-300 ${luggage ? "bg-blue-500 shadow-[0_0_8px_#3b82f6]" : "bg-black"}`}
-              ></span>
-              <input
-                type="checkbox"
+          <div className="flex flex-col gap-3 pt-2">
+            <Label className="flex items-center gap-3 text-white">
+              <Checkbox
                 checked={luggage}
-                onChange={() => setLuggage(!luggage)}
-                className="hidden"
+                onCheckedChange={(val) => setLuggage(Boolean(val))}
+                className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500 shadow-lg"
               />
               Место для багажа
-            </label>
-
-            <label className="flex items-center gap-3 text-white">
-              <span
-                className={`w-4 h-4 rounded-full border border-white transition-all duration-300 ${parcel ? "bg-blue-500 shadow-[0_0_8px_#3b82f6]" : "bg-black"}`}
-              ></span>
-              <input
-                type="checkbox"
+            </Label>
+            <Label className="flex items-center gap-3 text-white">
+              <Checkbox
                 checked={parcel}
-                onChange={() => setParcel(!parcel)}
-                className="hidden"
+                onCheckedChange={(val) => setParcel(Boolean(val))}
+                className="data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500 shadow-lg"
               />
               Возможна посылка
-            </label>
-          </div>
-
-          <div className="relative z-10">
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-violet-500 to-indigo-600 text-white font-semibold text-base py-3 rounded-2xl shadow-xl"
-            >
-              Добавить
-            </Button>
+            </Label>
           </div>
         </form>
+      </div>
+
+      <div className="relative z-0 flex justify-center mt-6">
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          className="w-[280px] bg-gradient-to-r from-violet-500 to-indigo-600 text-white font-semibold py-3 rounded-2xl shadow-xl"
+        >
+          Добавить
+        </Button>
       </div>
     </main>
   );
@@ -107,13 +107,13 @@ function Field({
   type?: string;
 }) {
   return (
-    <div className="flex flex-col gap-1">
-      <Label className="text-white text-sm font-medium">{label}</Label>
+    <div>
+      <Label className="text-white text-sm mb-1 block">{label}</Label>
       <Input
         type={type}
+        className="w-full rounded-xl bg-black border border-white/10 text-white placeholder-white/40 focus:ring-1 focus:ring-blue-500"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="bg-black border border-white/10 text-white placeholder:text-white/40 rounded-xl focus:ring-indigo-500"
         required
       />
     </div>
