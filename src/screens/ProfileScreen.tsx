@@ -10,7 +10,10 @@ export default function ProfileScreen() {
     const tg = (window as any).Telegram?.WebApp;
     tg?.ready();
   
-    console.log("tg.initDataUnsafe:", tg?.initDataUnsafe); // 👈 Добавляем лог
+    console.log("window.Telegram:", (window as any).Telegram);
+    console.log("WebApp.initData:", tg?.initData);
+    console.log("WebApp.initDataUnsafe:", tg?.initDataUnsafe);
+  
     setUser(tg?.initDataUnsafe?.user);
   }, []);
 
