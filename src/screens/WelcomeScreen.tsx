@@ -9,6 +9,14 @@ export default function WelcomeScreen() {
   const [avatarError, setAvatarError] = useState(false);
 
   useEffect(() => {
+    const tg = (window as any).Telegram?.WebApp;
+    tg?.ready?.();
+  
+    const tgUser = tg?.initDataUnsafe?.user;
+    console.log("🔍 user:", tgUser);
+    setUser(tgUser);
+  
+    // Проверка подключения к backend
     fetch(import.meta.env.VITE_API_URL + "/ping")
       .then((res) => res.text())
       .then((data) => {
@@ -47,7 +55,7 @@ export default function WelcomeScreen() {
             src={
               avatarError || !user?.id
                 ? "/fallback-avatar.png"
-                : `https://t.me/i/userpic/320/${user.id}.jpg`
+                : `${import.meta.env.VITE_API_URL}/avatar?user_id=${user.id}`
             }
             onError={() => setAvatarError(true)}
             alt="avatar"
