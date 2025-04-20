@@ -9,11 +9,14 @@ export default function WelcomeScreen() {
   const [avatarError, setAvatarError] = useState(false);
 
   useEffect(() => {
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      setUser(tg.initDataUnsafe?.user);
-    }
+    fetch(import.meta.env.VITE_API_URL + "/ping")
+      .then((res) => res.text())
+      .then((data) => {
+        console.log("✅ Backend доступен:", data);
+      })
+      .catch((err) => {
+        console.error("❌ Ошибка подключения к backend:", err);
+      });
   }, []);
 
   const handleStart = () => {
