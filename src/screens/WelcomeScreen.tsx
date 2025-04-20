@@ -14,6 +14,9 @@ export default function WelcomeScreen() {
   
     const tgUser = tg?.initDataUnsafe?.user;
     console.log("🔍 user:", tgUser);
+    console.log("Telegram:", (window as any).Telegram);
+console.log("Telegram.WebApp:", (window as any).Telegram?.WebApp);
+console.log("initDataUnsafe:", (window as any).Telegram?.WebApp?.initDataUnsafe);
     setUser(tgUser);
   
     // Проверка подключения к backend
