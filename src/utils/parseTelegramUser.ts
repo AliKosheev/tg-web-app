@@ -1,12 +1,14 @@
 export function parseTelegramUserFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    const userJson = params.get("user");
-    if (userJson) {
-      try {
-        return JSON.parse(decodeURIComponent(userJson));
-      } catch (e) {
-        console.error("Ошибка парсинга user из URL:", e);
-      }
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userParam = urlParams.get("user");
+  
+      if (!userParam) return null;
+  
+      // 👇 Просто возвращаем username, без JSON.parse
+      return { username: userParam };
+    } catch (err) {
+      console.error("❌ Ошибка парсинга user из URL:", err);
+      return null;
     }
-    return null;
   }
