@@ -53,14 +53,14 @@ export default function WelcomeScreen() {
           <div className="absolute inset-0 w-56 h-56 rounded-full bg-gradient-to-br from-indigo-500 via-violet-700 to-indigo-900 blur-3xl opacity-30 animate-pulse scale-125" />
           <img
             src={
-              avatarError || !user?.id
+              avatarError || !user?.username
                 ? "/fallback-avatar.png"
-                : `${import.meta.env.VITE_API_URL}/avatar?user_id=${user.id}`
-            }
-            onError={() => setAvatarError(true)}
-            alt="avatar"
-            className="relative w-56 h-56 rounded-full object-cover z-10"
-          />
+                : `${import.meta.env.VITE_API_URL}/avatar?user_id=${user.username}`
+                }
+                  onError={() => setAvatarError(true)}
+                  alt="avatar"
+                  className="relative w-56 h-56 rounded-full object-cover z-10"
+            />
         </div>
       </div>
 
