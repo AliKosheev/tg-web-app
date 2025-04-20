@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DotsGrid from "@/components/ui/dots-grid";
 import { motion } from "framer-motion";
+import { parseTelegramUserFromUrl } from "@/utils/parseTelegramUser";
+
 
 export default function WelcomeScreen() {
   const navigate = useNavigate();
@@ -12,11 +14,8 @@ export default function WelcomeScreen() {
     const tg = (window as any).Telegram?.WebApp;
     tg?.ready?.();
   
-    const tgUser = tg?.initDataUnsafe?.user;
+    const tgUser = tg?.initDataUnsafe?.user || parseTelegramUserFromUrl();
     console.log("🔍 user:", tgUser);
-    console.log("Telegram:", (window as any).Telegram);
-console.log("Telegram.WebApp:", (window as any).Telegram?.WebApp);
-console.log("initDataUnsafe:", (window as any).Telegram?.WebApp?.initDataUnsafe);
     setUser(tgUser);
   
     // Проверка подключения к backend
