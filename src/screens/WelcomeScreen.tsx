@@ -47,18 +47,23 @@ export default function WelcomeScreen() {
   };
 
 
-let parsedUser = null;
-try {
-  parsedUser = user?.username ? JSON.parse(user.username) : null;
-} catch (e) {
-  console.error("❌ Ошибка парсинга user.username:", e);
-}
-
-const avatarUrl =
-  avatarError || !parsedUser?.username
-    ? "/fallback-avatar.png"
-    : `${import.meta.env.VITE_API_URL}/avatar?user_id=${parsedUser.username}`;
-    
+  const actualUser = (() => {
+    try {
+      if (!user) return null;
+      if (typeof user.username === "string" && user.username.includes("{")) {
+        return JSON.parse(user.username); // двойная сериализация — исправляем
+      }
+      return user;
+    } catch {
+      return null;
+    }
+  })();
+  
+  const avatarUrl =
+    avatarError || !actualUser?.username
+      ? "/fallback-avatar.png"
+      : `${import.meta.env.VITE_API_URL}/avatar?user_id=${actualUser.username}`;
+      
   console.log("🖼️ Avatar URL:", avatarUrl);
 
   return (
