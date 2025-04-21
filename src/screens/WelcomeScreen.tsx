@@ -16,6 +16,7 @@ export default function WelcomeScreen() {
     const tgUser = tg?.initDataUnsafe?.user || parseTelegramUserFromUrl();
     console.log("🔍 user:", tgUser);
     setUser(tgUser);
+    localStorage.setItem("triply_user", JSON.stringify(tgUser));
 
     // Проверка подключения к backend
     fetch(import.meta.env.VITE_API_URL + "/ping")

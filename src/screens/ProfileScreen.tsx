@@ -8,13 +8,14 @@ export default function ProfileScreen() {
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
-    tg?.ready();
+    tg?.ready?.();
 
-    console.log("window.Telegram:", (window as any).Telegram);
-    console.log("WebApp.initData:", tg?.initData);
-    console.log("WebApp.initDataUnsafe:", tg?.initDataUnsafe);
+    const tgUser =
+      tg?.initDataUnsafe?.user ||
+      JSON.parse(localStorage.getItem("triply_user") || "null");
 
-    setUser(tg?.initDataUnsafe?.user);
+    console.log("🔍 [Profile] user:", tgUser);
+    setUser(tgUser);
   }, []);
 
   const displayName = user?.username
@@ -40,12 +41,10 @@ export default function ProfileScreen() {
             className="w-28 h-28 rounded-full object-cover border border-white/10"
             alt="avatar"
           />
-          <h2 className="text-xl font-semibold text-center">
-            {displayName}
-          </h2>
+          <h2 className="text-xl font-semibold text-center">{displayName}</h2>
         </div>
 
-        {/* Панель 1: Мои поездки / Мои отклики */}
+        {/* Панель 1 */}
         <div className="w-full bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
           <button className="w-full text-left px-4 py-4 flex justify-between items-center">
             <span>Мои поездки</span>
@@ -58,7 +57,7 @@ export default function ProfileScreen() {
           </button>
         </div>
 
-        {/* Панель 2: Очистить данные / Поддержка */}
+        {/* Панель 2 */}
         <div className="w-full bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
           <button className="w-full text-left px-4 py-4 flex justify-between items-center">
             <span>Очистить данные</span>

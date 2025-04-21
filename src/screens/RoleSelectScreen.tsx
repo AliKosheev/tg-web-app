@@ -11,10 +11,14 @@ export default function RoleSelectScreen() {
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      setUser(tg.initDataUnsafe?.user);
-    }
+    tg?.ready?.();
+
+    const tgUser =
+      tg?.initDataUnsafe?.user ||
+      JSON.parse(localStorage.getItem("triply_user") || "null");
+
+    console.log("🔍 [RoleSelect] user:", tgUser);
+    setUser(tgUser);
   }, []);
 
   const handleClick = (path: string) => {
@@ -30,13 +34,9 @@ export default function RoleSelectScreen() {
 
   return (
     <main className="relative h-[100dvh] w-full flex flex-col items-center justify-end px-4 pb-10 pt-20 bg-black text-white overflow-hidden">
-      {/* Точки на фоне */}
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
-
-      {/* Верхняя панель */}
       <TopBar showBack={false} showProfile={true} />
 
-      {/* Аватар + свечение */}
       <div className="absolute top-32 left-1/2 -translate-x-1/2 z-10">
         <div className="absolute inset-0 w-44 h-44 rounded-full bg-gradient-to-br from-indigo-500 via-violet-700 to-indigo-900 blur-3xl opacity-30 animate-pulse scale-125" />
         <img
@@ -47,16 +47,13 @@ export default function RoleSelectScreen() {
         />
       </div>
 
-      {/* Контент */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="relative z-20 w-full max-w-sm flex flex-col gap-6 items-center mt-80"
       >
-        <h1 className="text-xl font-semibold text-center">
-          Кто вы в этой поездке?
-        </h1>
+        <h1 className="text-xl font-semibold text-center">Кто вы в этой поездке?</h1>
 
         <button
           onClick={() => handleClick("/driver")}
