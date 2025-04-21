@@ -34,7 +34,7 @@ export default function PassengerScreen() {
     transition={{ duration: 0.3 }}
     className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 space-y-1"
   >
-    <div className="text-base font-semibold">{ride.from_} → {ride.to}</div>
+    <div className="text-base font-semibold">{ride.from} → {ride.to}</div>
     <div className="text-sm text-white/70">
       🗓 {ride.date} • 🕓 {ride.time}
     </div>
