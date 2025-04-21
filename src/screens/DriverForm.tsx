@@ -28,20 +28,25 @@ export default function DriverForm() {
   const isFieldEmpty = (value: string) => submitted && !value;
   const isFormValid = from && to && date && time && name && phone;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-
+  
     if (!isFormValid) return;
-
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg?.sendData) {
-      tg.sendData(
-        JSON.stringify({ from, to, date, time, name, phone, car, seats, luggage, parcel })
-      );
+  
+    const response = await fetch(import.meta.env.VITE_API_URL + "/rides", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ from, to, date, time, name, phone, car, seats, luggage, parcel }),
+    });
+  
+    if (response.ok) {
+      setShowSuccess(true);
+    } else {
+      console.error("❌ Ошибка при добавлении поездки:", await response.text());
     }
-
-    setShowSuccess(true);
   };
 
   return (
