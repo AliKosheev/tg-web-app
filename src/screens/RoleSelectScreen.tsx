@@ -17,6 +17,10 @@ export default function RoleSelectScreen() {
       tg?.initDataUnsafe?.user ||
       JSON.parse(localStorage.getItem("triply_user") || "null");
 
+    if (tg?.initDataUnsafe?.user) {
+      localStorage.setItem("triply_user", JSON.stringify(tgUser));
+    }
+
     console.log("🔍 [RoleSelect] user:", tgUser);
     setUser(tgUser);
   }, []);

@@ -7,15 +7,15 @@ export default function ProfileScreen() {
   const [avatarError, setAvatarError] = useState(false);
 
   useEffect(() => {
-    const tg = (window as any).Telegram?.WebApp;
-    tg?.ready?.();
+    const raw = localStorage.getItem("triply_user");
 
-    const tgUser =
-      tg?.initDataUnsafe?.user ||
-      JSON.parse(localStorage.getItem("triply_user") || "null");
-
-    console.log("🔍 [Profile] user:", tgUser);
-    setUser(tgUser);
+    try {
+      const parsed = JSON.parse(raw || "null");
+      console.log("🔍 [Profile] user:", parsed);
+      setUser(parsed);
+    } catch (e) {
+      console.error("Ошибка парсинга user из localStorage:", e);
+    }
   }, []);
 
   const displayName = user?.username
