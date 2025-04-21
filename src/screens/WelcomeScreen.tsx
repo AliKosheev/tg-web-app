@@ -13,23 +13,33 @@ export default function WelcomeScreen() {
     const tg = (window as any).Telegram?.WebApp;
     tg?.ready?.();
   
-    const tgUser = tg?.initDataUnsafe?.user || parseTelegramUserFromUrl();
-    console.log("🔍 user:", tgUser);
+    let tgUser = tg?.initDataUnsafe?.user;
   
-    // если уже объект — не сериализуем поля
-    if (tgUser && typeof tgUser.username === "string") {
-      setUser(tgUser);
-      localStorage.setItem("triply_user", JSON.stringify(tgUser));
-    } else {
+    // Если user не передан — читаем из localStorage
+    if (!tgUser) {
+      const saved = localStorage.getItem("triply_user");
       try {
-        const parsedUser = JSON.parse(tgUser?.username || "{}");
-        setUser(parsedUser);
-        localStorage.setItem("triply_user", JSON.stringify(parsedUser));
-      } catch (err) {
-        console.error("❌ Ошибка парсинга username:", err);
+        tgUser = saved ? JSON.parse(saved) : null;
+      } catch {
+        tgUser = null;
       }
     }
   
+    // Случай: user.username — это строка JSON (двойная сериализация)
+    if (tgUser && typeof tgUser.username === "string" && tgUser.username.includes("{")) {
+      try {
+        const parsed = JSON.parse(tgUser.username);
+        setUser(parsed);
+        localStorage.setItem("triply_user", JSON.stringify(parsed));
+      } catch {
+        setUser(null);
+      }
+    } else if (tgUser) {
+      setUser(tgUser);
+      localStorage.setItem("triply_user", JSON.stringify(tgUser));
+    }
+  
+    // Проверка backend
     fetch(import.meta.env.VITE_API_URL + "/ping")
       .then((res) => res.text())
       .then((data) => {
@@ -60,10 +70,10 @@ export default function WelcomeScreen() {
   })();
   
   const avatarUrl =
-    avatarError || !actualUser?.username
-      ? "/fallback-avatar.png"
-      : `${import.meta.env.VITE_API_URL}/avatar?user_id=${actualUser.username}`;
-      
+  avatarError || !user?.username
+    ? "/fallback-avatar.png"
+    : `${import.meta.env.VITE_API_URL}/avatar?user_id=${user.username}`;
+    
   console.log("🖼️ Avatar URL:", avatarUrl);
 
   return (
