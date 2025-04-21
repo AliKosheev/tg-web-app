@@ -34,11 +34,25 @@ export default function WelcomeScreen() {
     navigate("/select");
   };
 
-  const avatarUrl =
-    avatarError || !user?.username
-      ? "/fallback-avatar.png"
-      : `${import.meta.env.VITE_API_URL}/avatar?user_id=${user.username}`;
+  let parsedUser = null;
+try {
+  parsedUser = user?.username ? JSON.parse(user.username) : null;
+} catch (e) {
+  console.error("❌ Ошибка парсинга user.username:", e);
+}
 
+let parsedUser = null;
+try {
+  parsedUser = user?.username ? JSON.parse(user.username) : null;
+} catch (e) {
+  console.error("❌ Ошибка парсинга user.username:", e);
+}
+
+const avatarUrl =
+  avatarError || !parsedUser?.username
+    ? "/fallback-avatar.png"
+    : `${import.meta.env.VITE_API_URL}/avatar?user_id=${parsedUser.username}`;
+    
   console.log("🖼️ Avatar URL:", avatarUrl);
 
   return (
