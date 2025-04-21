@@ -11,10 +11,18 @@ export default function ProfileScreen() {
 
     try {
       const parsed = JSON.parse(raw || "null");
-      console.log("🔍 [Profile] user:", parsed);
-      setUser(parsed);
+
+      // если в parsed.username лежит сериализованная строка — парсим ещё раз
+      if (typeof parsed?.username === "string" && parsed.username.includes("{")) {
+        const reparsed = JSON.parse(parsed.username);
+        setUser(reparsed);
+        localStorage.setItem("triply_user", JSON.stringify(reparsed));
+      } else {
+        setUser(parsed);
+      }
     } catch (e) {
-      console.error("Ошибка парсинга user из localStorage:", e);
+      console.error("❌ Ошибка парсинга user:", e);
+      localStorage.removeItem("triply_user");
     }
   }, []);
 
