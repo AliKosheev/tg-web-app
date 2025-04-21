@@ -12,10 +12,10 @@ export default function WelcomeScreen() {
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     tg?.ready?.();
-  
+
     let tgUser = tg?.initDataUnsafe?.user;
-  
-    // Если user не передан — читаем из localStorage
+
+    // Если пользователь не передан — пробуем из localStorage
     if (!tgUser) {
       const saved = localStorage.getItem("triply_user");
       try {
@@ -24,8 +24,8 @@ export default function WelcomeScreen() {
         tgUser = null;
       }
     }
-  
-    // Случай: user.username — это строка JSON (двойная сериализация)
+
+    // Проверка на двойную сериализацию username
     if (tgUser && typeof tgUser.username === "string" && tgUser.username.includes("{")) {
       try {
         const parsed = JSON.parse(tgUser.username);
@@ -38,7 +38,7 @@ export default function WelcomeScreen() {
       setUser(tgUser);
       localStorage.setItem("triply_user", JSON.stringify(tgUser));
     }
-  
+
     // Проверка backend
     fetch(import.meta.env.VITE_API_URL + "/ping")
       .then((res) => res.text())
@@ -56,25 +56,25 @@ export default function WelcomeScreen() {
     navigate("/select");
   };
 
-
   const actualUser = (() => {
     try {
       if (!user) return null;
       if (typeof user.username === "string" && user.username.includes("{")) {
-        return JSON.parse(user.username); // двойная сериализация — исправляем
+        return JSON.parse(user.username);
       }
       return user;
     } catch {
       return null;
     }
   })();
-  
+
   const avatarUrl =
-  avatarError || !user?.username
-    ? "/fallback-avatar.png"
-    : `${import.meta.env.VITE_API_URL}/avatar?user_id=${user.username}`;
-    
+    avatarError || !actualUser?.username
+      ? "/fallback-avatar.png"
+      : `${import.meta.env.VITE_API_URL}/avatar?user_id=${actualUser.username}`;
+
   console.log("🖼️ Avatar URL:", avatarUrl);
+  console.log("🔍 user:", actualUser);
 
   return (
     <main className="relative h-[100dvh] bg-black text-white px-4 py-6 flex flex-col items-center justify-center overflow-hidden">
