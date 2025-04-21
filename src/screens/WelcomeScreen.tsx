@@ -58,10 +58,10 @@ export default function WelcomeScreen() {
   };
 
   const avatarUrl =
-    avatarError || !user?.username
-      ? "/fallback-avatar.png"
-      : `${import.meta.env.VITE_API_URL}/avatar?user_id=${user.username}`;
-
+  avatarError || !user?.id
+    ? "/fallback-avatar.png"
+    : `https://t.me/i/userpic/320/${user.id}.jpg`;
+    
   console.log("🖼️ Avatar URL:", avatarUrl);
   console.log("🔍 user:", user);
 
