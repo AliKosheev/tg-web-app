@@ -34,12 +34,6 @@ export default function WelcomeScreen() {
     navigate("/select");
   };
 
-  let parsedUser = null;
-try {
-  parsedUser = user?.username ? JSON.parse(user.username) : null;
-} catch (e) {
-  console.error("❌ Ошибка парсинга user.username:", e);
-}
 
 let parsedUser = null;
 try {
