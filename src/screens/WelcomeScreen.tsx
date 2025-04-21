@@ -13,29 +13,42 @@ export default function WelcomeScreen() {
     const tg = (window as any).Telegram?.WebApp;
     tg?.ready?.();
 
+    // Попытка взять пользователя из Telegram
     let tgUser = tg?.initDataUnsafe?.user;
 
-    // Если нет — пробуем из URL
+    // Если нет, пробуем из URL (при открытии с кнопки)
     if (!tgUser) {
       tgUser = parseTelegramUserFromUrl();
     }
 
-    // Если нет — пробуем из localStorage
+    // Если нет, пробуем из localStorage
     if (!tgUser) {
+      const saved = localStorage.getItem("triply_user");
       try {
-        const saved = localStorage.getItem("triply_user");
         tgUser = saved ? JSON.parse(saved) : null;
       } catch {
         tgUser = null;
       }
     }
 
-    if (tgUser) {
+    // Проверка на двойную сериализацию
+    if (tgUser && typeof tgUser.username === "string" && tgUser.username.includes("{")) {
+      try {
+        const parsed = JSON.parse(tgUser.username);
+        setUser(parsed);
+        localStorage.setItem("triply_user", JSON.stringify(parsed));
+      } catch {
+        setUser(null);
+      }
+    } else if (tgUser) {
       setUser(tgUser);
       localStorage.setItem("triply_user", JSON.stringify(tgUser));
     }
 
-    console.log("🔍 user:", tgUser);
+    fetch(import.meta.env.VITE_API_URL + "/ping")
+      .then((res) => res.text())
+      .then((data) => console.log("✅ Backend доступен:", data))
+      .catch((err) => console.error("❌ Ошибка подключения к backend:", err));
   }, []);
 
   const handleStart = () => {
@@ -45,18 +58,18 @@ export default function WelcomeScreen() {
   };
 
   const avatarUrl =
-    avatarError || !user?.id
+    avatarError || !user?.username
       ? "/fallback-avatar.png"
-      : `https://t.me/i/userpic/320/${user.id}.jpg`;
+      : `${import.meta.env.VITE_API_URL}/avatar?user_id=${user.username}`;
 
   console.log("🖼️ Avatar URL:", avatarUrl);
+  console.log("🔍 user:", user);
 
   return (
     <main className="relative h-[100dvh] bg-black text-white px-4 py-6 flex flex-col items-center justify-center overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
 
       <div className="relative z-10 -mt-12 flex flex-col items-center">
-        {/* Название */}
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -78,7 +91,6 @@ export default function WelcomeScreen() {
         </div>
       </div>
 
-      {/* Кнопка */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
