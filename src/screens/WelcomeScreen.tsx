@@ -12,13 +12,24 @@ export default function WelcomeScreen() {
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     tg?.ready?.();
-
+  
     const tgUser = tg?.initDataUnsafe?.user || parseTelegramUserFromUrl();
     console.log("🔍 user:", tgUser);
-    setUser(tgUser);
-    localStorage.setItem("triply_user", JSON.stringify(tgUser));
-
-    // Проверка подключения к backend
+  
+    // если уже объект — не сериализуем поля
+    if (tgUser && typeof tgUser.username === "string") {
+      setUser(tgUser);
+      localStorage.setItem("triply_user", JSON.stringify(tgUser));
+    } else {
+      try {
+        const parsedUser = JSON.parse(tgUser?.username || "{}");
+        setUser(parsedUser);
+        localStorage.setItem("triply_user", JSON.stringify(parsedUser));
+      } catch (err) {
+        console.error("❌ Ошибка парсинга username:", err);
+      }
+    }
+  
     fetch(import.meta.env.VITE_API_URL + "/ping")
       .then((res) => res.text())
       .then((data) => {
