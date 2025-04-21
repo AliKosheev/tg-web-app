@@ -16,11 +16,14 @@ export default function DriverForm() {
   const [car, setCar] = useState("");
   const [seats, setSeats] = useState("");
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+7");
   const [luggage, setLuggage] = useState(false);
   const [parcel, setParcel] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const today = new Date().toISOString().split("T")[0];
+  const currentTime = new Date().toTimeString().slice(0, 5);
 
   const isFieldEmpty = (value: string) => submitted && !value;
   const isFormValid = from && to && date && time && name && phone;
@@ -56,11 +59,32 @@ export default function DriverForm() {
           <h1 className="text-2xl font-bold text-center">Водитель</h1>
 
           <Field label="Имя" value={name} onChange={setName} invalid={isFieldEmpty(name)} />
-          <Field label="Телефон" value={phone} onChange={setPhone} invalid={isFieldEmpty(phone)} />
+          <Field
+            label="Телефон"
+            value={phone}
+            onChange={(v) => {
+              if (v.startsWith("+7")) setPhone(v);
+            }}
+            invalid={isFieldEmpty(phone)}
+          />
           <Field label="Откуда" value={from} onChange={setFrom} invalid={isFieldEmpty(from)} />
           <Field label="Куда" value={to} onChange={setTo} invalid={isFieldEmpty(to)} />
-          <Field label="Дата" value={date} onChange={setDate} type="date" invalid={isFieldEmpty(date)} />
-          <Field label="Время" value={time} onChange={setTime} type="time" invalid={isFieldEmpty(time)} />
+          <Field
+            label="Дата"
+            value={date}
+            onChange={setDate}
+            type="date"
+            invalid={isFieldEmpty(date)}
+            min={today}
+          />
+          <Field
+            label="Время"
+            value={time}
+            onChange={setTime}
+            type="time"
+            invalid={isFieldEmpty(time)}
+            min={date === today ? currentTime : undefined}
+          />
           <Field label="Марка машины" value={car} onChange={setCar} />
           <Field label="Свободных мест" value={seats} onChange={setSeats} type="number" customStyle />
 
@@ -87,13 +111,14 @@ export default function DriverForm() {
   );
 }
 
-function Field({ label, value, onChange, type = "text", customStyle = false, invalid = false }: {
+function Field({ label, value, onChange, type = "text", customStyle = false, invalid = false, min }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
   customStyle?: boolean;
   invalid?: boolean;
+  min?: string;
 }) {
   return (
     <div>
@@ -101,6 +126,7 @@ function Field({ label, value, onChange, type = "text", customStyle = false, inv
       <input
         type={type}
         value={value}
+        min={min}
         onChange={(e) => onChange(e.target.value)}
         className={`w-full rounded-xl border px-4 py-2 outline-none bg-white/10 text-white placeholder:text-white/40
           ${customStyle ? "appearance-none" : ""}
@@ -127,5 +153,3 @@ function Checkbox({ label, checked, onChange }: {
     </label>
   );
 }
-
-
