@@ -23,6 +23,11 @@ export default function RoleSelectScreen() {
     navigate(path);
   };
 
+  const avatarUrl =
+    avatarError || !user?.username
+      ? "/fallback-avatar.png"
+      : `https://api.24triply.ru/avatar?user_id=${user.username}`;
+
   return (
     <main className="relative h-[100dvh] w-full flex flex-col items-center justify-end px-4 pb-10 pt-20 bg-black text-white overflow-hidden">
       {/* Точки на фоне */}
@@ -35,11 +40,7 @@ export default function RoleSelectScreen() {
       <div className="absolute top-32 left-1/2 -translate-x-1/2 z-10">
         <div className="absolute inset-0 w-44 h-44 rounded-full bg-gradient-to-br from-indigo-500 via-violet-700 to-indigo-900 blur-3xl opacity-30 animate-pulse scale-125" />
         <img
-          src={
-            avatarError || !user?.id
-              ? "/fallback-avatar.png"
-              : `https://t.me/i/userpic/320/${user.id}.jpg`
-          }
+          src={avatarUrl}
           onError={() => setAvatarError(true)}
           alt="avatar"
           className="relative w-44 h-44 rounded-full object-cover z-10 border border-white/10"

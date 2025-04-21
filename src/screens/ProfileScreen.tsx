@@ -9,17 +9,22 @@ export default function ProfileScreen() {
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
     tg?.ready();
-  
+
     console.log("window.Telegram:", (window as any).Telegram);
     console.log("WebApp.initData:", tg?.initData);
     console.log("WebApp.initDataUnsafe:", tg?.initDataUnsafe);
-  
+
     setUser(tg?.initDataUnsafe?.user);
   }, []);
 
   const displayName = user?.username
     ? `@${user.username}`
     : `${user?.first_name || "Пользователь"} ${user?.last_name || ""}`;
+
+  const avatarUrl =
+    avatarError || !user?.username
+      ? "/fallback-avatar.png"
+      : `https://api.24triply.ru/avatar?user_id=${user.username}`;
 
   return (
     <main className="relative min-h-screen bg-black text-white px-4 py-6 overflow-hidden">
@@ -30,11 +35,7 @@ export default function ProfileScreen() {
         {/* Аватар и имя */}
         <div className="flex flex-col items-center gap-2">
           <img
-            src={
-              avatarError || !user?.photo_url
-                ? "/fallback-avatar.png"
-                : user.photo_url
-            }
+            src={avatarUrl}
             onError={() => setAvatarError(true)}
             className="w-28 h-28 rounded-full object-cover border border-white/10"
             alt="avatar"
