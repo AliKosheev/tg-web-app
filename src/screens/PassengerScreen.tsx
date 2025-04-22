@@ -11,7 +11,7 @@ export default function PassengerScreen() {
       .then((res) => res.json())
       .then((data) => {
         console.log("📦 Полученные поездки:", data);
-        setRides(data.reverse()); // чтобы новые были сверху
+        setRides(data.reverse());
       })
       .catch((err) => {
         console.error("❌ Ошибка загрузки поездок:", err);
@@ -27,28 +27,69 @@ export default function PassengerScreen() {
         <h1 className="text-2xl font-bold mb-4">Доступные поездки</h1>
 
         {rides.map((ride, index) => (
-  <motion.div
-    key={index}
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3 }}
-    className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 space-y-1"
-  >
-    <div className="text-base font-semibold">{ride.from} → {ride.to}</div>
-    <div className="text-sm text-white/70">
-      🗓 {ride.date} • 🕓 {ride.time}
-    </div>
-    <div className="text-sm text-white/70">👤 Водитель: {ride.name}</div>
-    <div className="text-sm text-white/70">🚗 Мест: {ride.seats}</div>
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"
+          >
+            <div className="text-lg font-bold flex items-center gap-2 mb-1">
+              <img src="/icons/arrow-right.svg" className="w-4 h-4" />
+              {ride.from} → {ride.to}
+            </div>
 
-    <button
-      onClick={() => alert(`Отклик на поездку в ${ride.to}`)}
-      className="mt-3 w-full py-2 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 hover:opacity-90 transition"
-    >
-      Откликнуться
-    </button>
-  </motion.div>
-))}
+            <div className="text-sm text-white/70 flex items-center gap-2">
+              <img src="/icons/calendar.svg" className="w-4 h-4" />
+              {ride.date}
+              <img src="/icons/clock.svg" className="w-4 h-4 ml-4" />
+              {ride.time}
+            </div>
+
+            <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
+              <img src="/icons/call.svg" className="w-4 h-4" />
+              {ride.phone}
+            </div>
+
+            <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
+              <img src="/icons/profile.svg" className="w-4 h-4" />
+              @{ride.username || "unknown"}
+            </div>
+
+            <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
+              <img src="/icons/car.svg" className="w-4 h-4" />
+              {ride.car}
+              <img src="/icons/seats.svg" className="w-4 h-4 ml-4" />
+              {ride.seats} мест
+            </div>
+
+            <div className="flex items-center gap-4 mt-2">
+              {ride.luggage && (
+                <img src="/icons/luggage.svg" className="w-5 h-5" title="Багаж" />
+              )}
+              {ride.parcel && (
+                <img src="/icons/check.svg" className="w-5 h-5" title="Посылка" />
+              )}
+            </div>
+
+            <div className="flex gap-2 mt-4">
+              <a
+                href={`https://t.me/${ride.username}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 text-center py-2 text-sm font-medium rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition"
+              >
+                Написать
+              </a>
+              <button
+                onClick={() => alert(`Отклик на поездку в ${ride.to}`)}
+                className="flex-1 py-2 text-sm font-medium text-white rounded-xl bg-indigo-600 hover:bg-indigo-700 transition"
+              >
+                Отклик
+              </button>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </main>
   );
