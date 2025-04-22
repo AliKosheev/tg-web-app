@@ -53,7 +53,7 @@ export default function PassengerScreen() {
 
             <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
               <img src="/icons/profile.svg" className="w-4 h-4" />
-              @{ride.username || "unknown"}
+              {ride.name || "unknown"}
             </div>
 
             <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
@@ -74,7 +74,7 @@ export default function PassengerScreen() {
 
             <div className="flex gap-2 mt-4">
               <a
-                href={`https://t.me/${ride.username}`}
+                href={`https://t.me/${ride.telegram_username}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 text-center py-2 text-sm font-medium rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition"
