@@ -29,8 +29,17 @@ export default function DriverForm() {
   const isFormValid = from && to && date && time && name && phone;
 
   const tg = (window as any).Telegram?.WebApp;
-  const telegram_username = tg?.initDataUnsafe?.user?.username || "";
-
+  const savedUser = localStorage.getItem("triply_user");
+  let telegram_username = "";
+  
+  try {
+    const parsed = savedUser ? JSON.parse(savedUser) : null;
+    telegram_username = parsed?.username || "";
+    console.log("🧾 username из localStorage:", telegram_username);
+  } catch (e) {
+    console.warn("❌ Не удалось получить username из localStorage");
+  }
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
