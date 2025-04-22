@@ -72,7 +72,7 @@ export default function PassengerScreen() {
               )}
             </div>
 
-<div className="flex flex-col gap-2 mt-4">
+<div className="flex gap-2 mt-4">
   {ride.telegram_username && (
     <a
       href={`https://t.me/${ride.telegram_username}`}
