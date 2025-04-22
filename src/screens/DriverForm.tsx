@@ -28,6 +28,9 @@ export default function DriverForm() {
   const isFieldEmpty = (value: string) => submitted && !value;
   const isFormValid = from && to && date && time && name && phone;
 
+  const tg = (window as any).Telegram?.WebApp;
+  const telegram_username = tg?.initDataUnsafe?.user?.username || "";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
