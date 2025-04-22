@@ -28,10 +28,10 @@ export default function DriverForm() {
   const isFieldEmpty = (value: string) => submitted && !value;
   const isFormValid = from && to && date && time && name && phone;
 
-  const tg = (window as any).Telegram?.WebApp;
+  // Получаем telegram_username из localStorage
   const savedUser = localStorage.getItem("triply_user");
   let telegram_username = "";
-  
+
   try {
     const parsed = savedUser ? JSON.parse(savedUser) : null;
     telegram_username = parsed?.username || "";
@@ -39,16 +39,13 @@ export default function DriverForm() {
   } catch (e) {
     console.warn("❌ Не удалось получить username из localStorage");
   }
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-  
+
     if (!isFormValid) return;
-  
-    const tg = (window as any).Telegram?.WebApp;
-    const telegram_username = tg?.initDataUnsafe?.user?.username || "";
-  
+
     const response = await fetch(import.meta.env.VITE_API_URL + "/rides", {
       method: "POST",
       headers: {
@@ -68,7 +65,7 @@ export default function DriverForm() {
         telegram_username,
       }),
     });
-  
+
     if (response.ok) {
       setShowSuccess(true);
     } else {
