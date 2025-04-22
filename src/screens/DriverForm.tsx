@@ -37,12 +37,27 @@ export default function DriverForm() {
   
     if (!isFormValid) return;
   
+    const tg = (window as any).Telegram?.WebApp;
+    const telegram_username = tg?.initDataUnsafe?.user?.username || "";
+  
     const response = await fetch(import.meta.env.VITE_API_URL + "/rides", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ from, to, date, time, name, phone, car, seats, luggage, parcel, telegram_username, }),
+      body: JSON.stringify({
+        from,
+        to,
+        date,
+        time,
+        name,
+        phone,
+        car,
+        seats,
+        luggage,
+        parcel,
+        telegram_username,
+      }),
     });
   
     if (response.ok) {
