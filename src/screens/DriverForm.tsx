@@ -13,7 +13,7 @@ export default function DriverForm() {
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [car, setCar] = useState("");
+  const [carType, setCarType] = useState("");
   const [seats, setSeats] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+7");
@@ -26,9 +26,8 @@ export default function DriverForm() {
   const currentTime = new Date().toTimeString().slice(0, 5);
 
   const isFieldEmpty = (value: string) => submitted && !value;
-  const isFormValid = from && to && date && time && name && phone;
+  const isFormValid = from && to && date && time && name && phone && carType;
 
-  // Получаем telegram_username из localStorage
   const savedUser = localStorage.getItem("triply_user");
   let telegram_username = "";
 
@@ -58,7 +57,7 @@ export default function DriverForm() {
         time,
         name,
         phone,
-        car,
+        car: carType,
         seats,
         luggage,
         parcel,
@@ -114,7 +113,15 @@ export default function DriverForm() {
             invalid={isFieldEmpty(time)}
             min={date === today ? currentTime : undefined}
           />
-          <Field label="Марка машины" value={car} onChange={setCar} />
+
+          <SelectField
+            label="Тип автомобиля"
+            value={carType}
+            onChange={setCarType}
+            options={["Купе", "Легковая", "Грузовой транспорт", "Микроавтобус", "Автобус"]}
+            invalid={isFieldEmpty(carType)}
+          />
+
           <Field label="Свободных мест" value={seats} onChange={setSeats} type="number" customStyle />
 
           <div className="space-y-2 pt-2">
@@ -161,6 +168,35 @@ function Field({ label, value, onChange, type = "text", customStyle = false, inv
           ${customStyle ? "appearance-none" : ""}
           ${invalid ? "border-red-500 ring-1 ring-red-500" : "border-white/10 focus:ring-2 focus:ring-indigo-500"}`}
       />
+    </div>
+  );
+}
+
+function SelectField({ label, value, onChange, options, invalid }: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  invalid?: boolean;
+}) {
+  return (
+    <div>
+      <Label className="text-white/80 text-sm mb-1 block">{label}</Label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`w-full rounded-xl border px-4 py-2 outline-none bg-white/10 text-white placeholder:text-white/40 appearance-none
+          ${invalid ? "border-red-500 ring-1 ring-red-500" : "border-white/10 focus:ring-2 focus:ring-indigo-500"}`}
+      >
+        <option value="" disabled hidden>
+          Выберите тип
+        </option>
+        {options.map((option) => (
+          <option key={option} value={option} className="text-black">
+            {option}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
