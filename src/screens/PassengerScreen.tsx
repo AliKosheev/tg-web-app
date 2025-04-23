@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import DotsGrid from "@/components/ui/dots-grid";
 import TopBar from "@/components/ui/TopBar";
+import ReplyModal from "@/components/ui/ReplyModal";
 
 export default function PassengerScreen() {
   const [rides, setRides] = useState<any[]>([]);
+  const [showReply, setShowReply] = useState(false);
+  const [selectedRide, setSelectedRide] = useState<any>(null);
 
   useEffect(() => {
     fetch("https://api.24triply.ru/rides")
@@ -17,6 +20,17 @@ export default function PassengerScreen() {
         console.error("❌ Ошибка загрузки поездок:", err);
       });
   }, []);
+
+  const handleReply = (ride: any) => {
+    setSelectedRide(ride);
+    setShowReply(true);
+  };
+
+  const handleSubmitReply = (data: any) => {
+    console.log("📨 Отклик отправлен:", { ...data, ride: selectedRide });
+    // TODO: отправить на бэкенд или Telegram-боту
+    setShowReply(false);
+  };
 
   return (
     <main className="relative min-h-screen bg-black text-white px-4 py-6 overflow-hidden">
@@ -72,28 +86,30 @@ export default function PassengerScreen() {
               )}
             </div>
 
-<div className="flex gap-2 mt-4">
-  {ride.telegram_username && (
-    <a
-      href={`https://t.me/${ride.telegram_username}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-full sm:w-auto py-2 px-4 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 hover:opacity-90 transition text-center"
-    >
-      Написать
-    </a>
-  )}
-  
-  <button
-    onClick={() => alert(`Отклик на поездку в ${ride.to}`)}
-    className="w-full sm:flex-1 py-2 text-sm font-medium text-white rounded-xl bg-indigo-600 hover:bg-indigo-700 transition"
-  >
-    Отклик
-  </button>
-</div>
+            <div className="flex gap-2 mt-4">
+              {ride.telegram_username && (
+                <a
+                  href={`https://t.me/${ride.telegram_username}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto py-2 px-4 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 hover:opacity-90 transition text-center"
+                >
+                  Написать
+                </a>
+              )}
+
+              <button
+                onClick={() => handleReply(ride)}
+                className="w-full sm:flex-1 py-2 text-sm font-medium text-white rounded-xl bg-indigo-600 hover:bg-indigo-700 transition"
+              >
+                Отклик
+              </button>
+            </div>
           </motion.div>
         ))}
       </div>
+
+      <ReplyModal open={showReply} onClose={() => setShowReply(false)} onSubmit={handleSubmitReply} />
     </main>
   );
 }
