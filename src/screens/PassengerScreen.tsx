@@ -26,10 +26,40 @@ export default function PassengerScreen() {
     setShowReply(true);
   };
 
-  const handleSubmitReply = (data: any) => {
-    console.log("📨 Отклик отправлен:", { ...data, ride: selectedRide });
-    // TODO: отправить на бэкенд или Telegram-боту
-    setShowReply(false);
+  const handleSubmitReply = async (data: any) => {
+    if (!selectedRide) return;
+  
+    try {
+      const response = await fetch("https://api.24triply.ru/reply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ride_id: selectedRide.id,
+          name: data.name,
+          phone: data.phone,
+          type: data.type === "trip" ? "поездка" : "посылка",
+          comment: data.comment,
+          count: data.people ? parseInt(data.people) : 1,
+        }),
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        console.log("✅ Отклик отправлен:", result);
+        // Здесь можно вызвать SuccessModal или тост
+      } else {
+        console.error("❌ Ошибка при отправке:", result);
+        alert("Ошибка при отправке отклика");
+      }
+    } catch (err) {
+      console.error("🚨 Ошибка сети:", err);
+      alert("Ошибка сети при отправке отклика");
+    } finally {
+      setShowReply(false);
+    }
   };
 
   return (
