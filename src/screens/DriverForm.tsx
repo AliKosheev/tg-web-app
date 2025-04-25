@@ -39,30 +39,37 @@ export default function DriverForm() {
     console.warn("❌ Не удалось получить username из localStorage");
   }
 
+  const telegram_user_id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
 
     if (!isFormValid) return;
 
+    const rideData = {
+      from,
+      to,
+      date,
+      time,
+      name,
+      phone,
+      car: carType,
+      seats,
+      luggage,
+      parcel,
+      telegram_username,
+      telegram_user_id,
+    };
+
+    console.log("📤 Данные отправки поездки:", rideData);
+
     const response = await fetch(import.meta.env.VITE_API_URL + "/rides", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        from,
-        to,
-        date,
-        time,
-        name,
-        phone,
-        car: carType,
-        seats,
-        luggage,
-        parcel,
-        telegram_username,
-      }),
+      body: JSON.stringify(rideData),
     });
 
     if (response.ok) {
