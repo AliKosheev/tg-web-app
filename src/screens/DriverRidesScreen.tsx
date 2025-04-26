@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import TopBar from "@/components/ui/TopBar";
-import DotsGrid from "@/components/ui/DotsGrid";
+import DotsGrid from "@/components/ui/dots-grid";
 import ReplyListModal from "@/components/ui/ReplyListModal";
 
 export default function DriverRidesScreen() {
