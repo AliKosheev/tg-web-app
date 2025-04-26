@@ -2,11 +2,21 @@
 
 import { useState, useEffect } from "react";
 
+interface ReplyPayload {
+  ride_id: number;
+  name: string;
+  phone: string;
+  type: "trip" | "parcel";
+  count: number;
+  comment: string;
+  telegram_user_id: number;
+}
+
 interface ReplyModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: any) => void;
-  rideId: number | null; // ✏️ добавили rideId поездки!
+  onSubmit: (data: ReplyPayload) => void;
+  rideId: number | null; // ID поездки
 }
 
 export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyModalProps) {
@@ -31,19 +41,19 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
   const handleSubmit = () => {
     const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
 
-    if (!rideId) {
-      console.error("❌ Нет rideId для отклика");
+    if (!rideId || !tgUser?.id) {
+      console.error("❌ Ошибка: нет rideId или Telegram ID");
       return;
     }
 
-    const payload = {
-      ride_id: rideId, // ✅ обязательно
+    const payload: ReplyPayload = {
+      ride_id: rideId,
       name,
       phone,
       type,
-      count: type === "trip" ? Number(people) : 1, // если посылка — ставим 1
+      count: type === "trip" ? Number(people) || 1 : 1, // защита от пустого поля
       comment,
-      telegram_user_id: tgUser?.id, // ✅ обязательно
+      telegram_user_id: tgUser.id,
     };
 
     console.log("📦 Payload отклика:", payload);
@@ -75,7 +85,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
-        {/* Тип */}
+        {/* Тип поездки */}
         <div className="relative mb-3">
           <select
             value={type}
@@ -92,7 +102,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           </div>
         </div>
 
-        {/* Количество человек */}
+        {/* Количество человек (только для поездки) */}
         {type === "trip" && (
           <input
             type="number"
@@ -112,7 +122,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           className="w-full mb-4 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
         />
 
-        {/* Кнопка */}
+        {/* Кнопка отправки */}
         <button
           onClick={handleSubmit}
           className="w-full bg-indigo-600 active:bg-indigo-700 text-white font-semibold py-2 rounded-xl transition"

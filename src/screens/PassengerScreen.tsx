@@ -10,7 +10,7 @@ export default function PassengerScreen() {
   const [selectedRide, setSelectedRide] = useState<any>(null);
 
   useEffect(() => {
-    fetch("https://api.24triply.ru/rides")
+    fetch(import.meta.env.VITE_API_URL + "/rides")
       .then((res) => res.json())
       .then((data) => {
         console.log("📦 Полученные поездки:", data);
@@ -28,9 +28,16 @@ export default function PassengerScreen() {
 
   const handleSubmitReply = async (data: any) => {
     if (!selectedRide) return;
-  
+
+    const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
+
+    if (!tgUser?.id) {
+      alert("❌ Не удалось получить Telegram ID");
+      return;
+    }
+
     try {
-      const response = await fetch("https://api.24triply.ru/reply", {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/reply", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,17 +46,18 @@ export default function PassengerScreen() {
           ride_id: selectedRide.id,
           name: data.name,
           phone: data.phone,
-          type: data.type === "trip" ? "поездка" : "посылка",
+          type: data.type, // тут уже trip или parcel
           comment: data.comment,
-          count: data.people ? parseInt(data.people) : 1,
+          count: data.count,
+          telegram_user_id: tgUser.id, // 👈 ОБЯЗАТЕЛЬНО
         }),
       });
-  
+
       const result = await response.json();
-  
+
       if (response.ok) {
         console.log("✅ Отклик отправлен:", result);
-        // Здесь можно вызвать SuccessModal или тост
+        alert("✅ Отклик успешно отправлен!");
       } else {
         console.error("❌ Ошибка при отправке:", result);
         alert("Ошибка при отправке отклика");
@@ -80,7 +88,7 @@ export default function PassengerScreen() {
           >
             <div className="text-lg font-bold flex items-center gap-2 mb-1">
               <img src="/icons/arrow-right.svg" className="w-4 h-4" />
-              {ride.from} → {ride.to}
+              {ride.from_} → {ride.to}
             </div>
 
             <div className="text-sm text-white/70 flex items-center gap-2">
@@ -97,7 +105,7 @@ export default function PassengerScreen() {
 
             <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
               <img src="/icons/profile.svg" className="w-4 h-4" />
-              {ride.name || "unknown"}
+              {ride.name || "Не указано"}
             </div>
 
             <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
@@ -127,12 +135,11 @@ export default function PassengerScreen() {
                   Написать
                 </a>
               )}
-
               <button
                 onClick={() => handleReply(ride)}
                 className="w-full sm:flex-1 py-2 text-sm font-medium text-white rounded-xl bg-indigo-600 hover:bg-indigo-700 transition"
               >
-                Отклик
+                Откликнуться
               </button>
             </div>
           </motion.div>
