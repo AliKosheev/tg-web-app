@@ -29,10 +29,11 @@ export default function PassengerScreen() {
   const handleSubmitReply = async (data: any) => {
     if (!selectedRide) return;
 
-    const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
+    const raw = localStorage.getItem("triply_user");
+    const user = raw ? JSON.parse(raw) : null;
 
-    if (!tgUser?.id || !rideId) {
-      alert("❌ Не удалось получить Telegram ID");
+    if (!user?.id || !selectedRide?.id) {
+      alert("❌ Не удалось получить данные поездки или Telegram ID");
       return;
     }
 
@@ -46,10 +47,10 @@ export default function PassengerScreen() {
           ride_id: selectedRide.id,
           name: data.name,
           phone: data.phone,
-          type: data.type, // тут уже trip или parcel
+          type: data.type,
           comment: data.comment,
           count: data.count,
-          telegram_user_id: tgUser.id, // 👈 ОБЯЗАТЕЛЬНО
+          telegram_user_id: user.id,
         }),
       });
 
@@ -147,11 +148,11 @@ export default function PassengerScreen() {
       </div>
 
       <ReplyModal
-          open={showReply}
-          onClose={() => setShowReply(false)}
-          onSubmit={handleSubmitReply}
-          rideId={selectedRide?.id ?? null} // ← добавляем!
+        open={showReply}
+        onClose={() => setShowReply(false)}
+        onSubmit={handleSubmitReply}
+        rideId={selectedRide?.id ?? null}
       />
-</main>
+    </main>
   );
 }
