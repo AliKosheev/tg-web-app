@@ -146,7 +146,12 @@ export default function PassengerScreen() {
         ))}
       </div>
 
-      <ReplyModal open={showReply} onClose={() => setShowReply(false)} onSubmit={handleSubmitReply} />
-    </main>
+      <ReplyModal
+          open={showReply}
+          onClose={() => setShowReply(false)}
+          onSubmit={handleSubmitReply}
+          rideId={selectedRide?.id ?? null} // ← добавляем!
+      />
+</main>
   );
 }
