@@ -37,10 +37,12 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
   if (!open) return null;
 
   const handleSubmit = () => {
-    const raw = localStorage.getItem("triply_user");
-    const user = raw ? JSON.parse(raw) : null;
+    const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
 
-    if (!rideId || !user?.id) {
+    console.log("🐞 В модалке: rideId =", rideId);
+    console.log("🐞 В модалке: tgUser =", tgUser);
+
+    if (!rideId || !tgUser?.id) {
       alert("❌ Ошибка: нет данных поездки или Telegram ID");
       return;
     }
@@ -52,8 +54,10 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
       type,
       count: type === "trip" ? Number(people) || 1 : 1,
       comment,
-      telegram_user_id: user.id,
+      telegram_user_id: tgUser.id,
     };
+
+    console.log("📦 Payload отклика:", payload);
 
     onSubmit(payload);
     onClose();
@@ -92,8 +96,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
             <option value="trip">Поездка</option>
             <option value="parcel">Посылка</option>
           </select>
-
-          {/* Иконка стрелочки */}
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
             <svg className="w-4 h-4 text-white/50" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -101,7 +103,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           </div>
         </div>
 
-        {/* Количество человек (только для поездки) */}
+        {/* Количество человек */}
         {type === "trip" && (
           <input
             type="number"
@@ -115,7 +117,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
 
         {/* Комментарий */}
         <textarea
-          placeholder="Комментарий к поездке или описание посылки"
+          placeholder={type === "trip" ? "Комментарий к поездке" : "Описание посылки"}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           className="w-full mb-4 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
