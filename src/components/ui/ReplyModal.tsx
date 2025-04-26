@@ -15,7 +15,6 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
   const [people, setPeople] = useState("");
   const [comment, setComment] = useState("");
 
-  // Сброс формы при открытии
   useEffect(() => {
     if (open) {
       setName("");
@@ -29,13 +28,17 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
   if (!open) return null;
 
   const handleSubmit = () => {
+    const tg = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
+
     const payload = {
       name,
       phone,
       type,
-      count: type === "trip" ? Number(people) : 0, // ➔ для поездки сохраняем количество человек
+      count: type === "trip" ? Number(people) : 1, // посылка = 1 по умолчанию
       comment,
+      telegram_user_id: tg?.id, // вот это обязательно!
     };
+
     onSubmit(payload);
     onClose();
   };
@@ -45,7 +48,6 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
       <div className="bg-black rounded-2xl p-6 w-full max-w-md shadow-2xl border border-white/10">
         <h2 className="text-xl font-bold mb-4 text-center">Отклик на поездку</h2>
 
-        {/* Имя */}
         <input
           type="text"
           placeholder="Ваше имя"
@@ -54,7 +56,6 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
           className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
-        {/* Телефон */}
         <input
           type="tel"
           placeholder="Телефон (+7)"
@@ -63,7 +64,6 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
           className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
-        {/* Тип отклика */}
         <div className="relative mb-3">
           <select
             value={type}
@@ -80,7 +80,6 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
           </div>
         </div>
 
-        {/* Количество человек (только если поездка) */}
         {type === "trip" && (
           <input
             type="number"
@@ -92,7 +91,6 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
           />
         )}
 
-        {/* Комментарий */}
         <textarea
           placeholder={type === "trip" ? "Комментарий к поездке" : "Описание посылки (размер, вес)"}
           value={comment}
@@ -100,7 +98,6 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
           className="w-full mb-4 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
         />
 
-        {/* Кнопка отправки */}
         <button
           onClick={handleSubmit}
           className="w-full bg-indigo-600 active:bg-indigo-700 text-white font-semibold py-2 rounded-xl transition"
