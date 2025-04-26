@@ -41,8 +41,13 @@ export default function WelcomeScreen() {
         setUser(null);
       }
     } else if (tgUser) {
-      setUser(tgUser);
-      localStorage.setItem("triply_user", JSON.stringify(tgUser));
+      const formattedUser = {
+        id: tgUser?.id,
+        username: tgUser?.username,
+        first_name: tgUser?.first_name,
+      };
+      setUser(formattedUser);
+      localStorage.setItem("triply_user", JSON.stringify(formattedUser));
     }
 
     fetch(import.meta.env.VITE_API_URL + "/ping")
