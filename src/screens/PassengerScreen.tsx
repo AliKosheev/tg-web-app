@@ -1,5 +1,3 @@
-// screens/PassengerScreen.tsx
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import DotsGrid from "@/components/ui/dots-grid";
@@ -14,8 +12,13 @@ export default function PassengerScreen() {
   useEffect(() => {
     fetch(import.meta.env.VITE_API_URL + "/rides")
       .then((res) => res.json())
-      .then((data) => setRides(data.reverse()))
-      .catch((err) => console.error("❌ Ошибка загрузки поездок:", err));
+      .then((data) => {
+        console.log("📦 Полученные поездки:", data);
+        setRides(data.reverse());
+      })
+      .catch((err) => {
+        console.error("❌ Ошибка загрузки поездок:", err);
+      });
   }, []);
 
   const handleReply = (ride: any) => {
@@ -23,21 +26,45 @@ export default function PassengerScreen() {
     setShowReply(true);
   };
 
-  const handleSubmitReply = async (payload: any) => {
+  const handleSubmitReply = async (data: any) => {
+    if (!selectedRide) return;
+
+    const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
+
+    if (!tgUser?.id || !rideId) {
+      alert("❌ Не удалось получить Telegram ID");
+      return;
+    }
+
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + "/reply", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ride_id: selectedRide.id,
+          name: data.name,
+          phone: data.phone,
+          type: data.type, // тут уже trip или parcel
+          comment: data.comment,
+          count: data.count,
+          telegram_user_id: tgUser.id, // 👈 ОБЯЗАТЕЛЬНО
+        }),
       });
 
+      const result = await response.json();
+
       if (response.ok) {
-        alert("✅ Отклик отправлен!");
+        console.log("✅ Отклик отправлен:", result);
+        alert("✅ Отклик успешно отправлен!");
       } else {
-        alert("❌ Ошибка при отправке отклика");
+        console.error("❌ Ошибка при отправке:", result);
+        alert("Ошибка при отправке отклика");
       }
-    } catch (error) {
-      alert("🚨 Ошибка сети");
+    } catch (err) {
+      console.error("🚨 Ошибка сети:", err);
+      alert("Ошибка сети при отправке отклика");
     } finally {
       setShowReply(false);
     }
@@ -49,46 +76,82 @@ export default function PassengerScreen() {
       <TopBar showBack={true} showProfile={true} />
 
       <div className="relative z-10 max-w-md mx-auto space-y-4 pt-12">
-        <h1 className="text-2xl font-bold mb-4 text-center">Доступные поездки</h1>
+        <h1 className="text-2xl font-bold mb-4">Доступные поездки</h1>
 
-        {rides.length === 0 ? (
-          <p className="text-center text-white/60">Нет доступных поездок.</p>
-        ) : (
-          rides.map((ride) => (
-            <motion.div
-              key={ride.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"
-            >
-              <div className="text-lg font-bold flex items-center gap-2 mb-1">
-                {ride.from_} → {ride.to}
-              </div>
+        {rides.map((ride, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"
+          >
+            <div className="text-lg font-bold flex items-center gap-2 mb-1">
+              <img src="/icons/arrow-right.svg" className="w-4 h-4" />
+              {ride.from_} → {ride.to}
+            </div>
 
-              <div className="text-sm text-white/70 flex items-center gap-2">
-                {ride.date} в {ride.time}
-              </div>
+            <div className="text-sm text-white/70 flex items-center gap-2">
+              <img src="/icons/calendar.svg" className="w-4 h-4" />
+              {ride.date}
+              <img src="/icons/clock.svg" className="w-4 h-4 ml-4" />
+              {ride.time}
+            </div>
 
-              <div className="flex gap-2 mt-4">
-                <button
-                  onClick={() => handleReply(ride)}
-                  className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-xl transition"
+            <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
+              <img src="/icons/call.svg" className="w-4 h-4" />
+              {ride.phone}
+            </div>
+
+            <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
+              <img src="/icons/profile.svg" className="w-4 h-4" />
+              {ride.name || "Не указано"}
+            </div>
+
+            <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
+              <img src="/icons/car.svg" className="w-4 h-4" />
+              {ride.car}
+              <img src="/icons/seats.svg" className="w-4 h-4 ml-4" />
+              {ride.seats} мест
+            </div>
+
+            <div className="flex items-center gap-4 mt-2">
+              {ride.luggage && (
+                <img src="/icons/luggage.svg" className="w-5 h-5" title="Багаж" />
+              )}
+              {ride.parcel && (
+                <img src="/icons/check.svg" className="w-5 h-5" title="Посылка" />
+              )}
+            </div>
+
+            <div className="flex gap-2 mt-4">
+              {ride.telegram_username && (
+                <a
+                  href={`https://t.me/${ride.telegram_username}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto py-2 px-4 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 hover:opacity-90 transition text-center"
                 >
-                  Откликнуться
-                </button>
-              </div>
-            </motion.div>
-          ))
-        )}
+                  Написать
+                </a>
+              )}
+              <button
+                onClick={() => handleReply(ride)}
+                className="w-full sm:flex-1 py-2 text-sm font-medium text-white rounded-xl bg-indigo-600 hover:bg-indigo-700 transition"
+              >
+                Откликнуться
+              </button>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
       <ReplyModal
-        open={showReply}
-        onClose={() => setShowReply(false)}
-        onSubmit={handleSubmitReply}
-        rideId={selectedRide?.id ?? null}
+          open={showReply}
+          onClose={() => setShowReply(false)}
+          onSubmit={handleSubmitReply}
+          rideId={selectedRide?.id ?? null} // ← добавляем!
       />
-    </main>
+</main>
   );
 }
