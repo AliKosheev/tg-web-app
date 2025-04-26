@@ -1,7 +1,6 @@
-import { Dialog } from "@headlessui/react";
-// ReplyModal.tsx — стилизован под тёмную тему Triply
+// components/ui/ReplyModal.tsx
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ReplyModalProps {
   open: boolean;
@@ -12,9 +11,20 @@ interface ReplyModalProps {
 export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+7");
-  const [type, setType] = useState("trip");
+  const [type, setType] = useState<"trip" | "parcel">("trip");
   const [people, setPeople] = useState("");
   const [comment, setComment] = useState("");
+
+  // Сброс формы при открытии
+  useEffect(() => {
+    if (open) {
+      setName("");
+      setPhone("+7");
+      setType("trip");
+      setPeople("");
+      setComment("");
+    }
+  }, [open]);
 
   if (!open) return null;
 
@@ -23,7 +33,7 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
       name,
       phone,
       type,
-      people: type === "trip" ? people : undefined,
+      count: type === "trip" ? Number(people) : 0, // ➔ для поездки сохраняем количество человек
       comment,
     };
     onSubmit(payload);
@@ -33,28 +43,31 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center px-4">
       <div className="bg-black rounded-2xl p-6 w-full max-w-md shadow-2xl border border-white/10">
-        <h2 className="text-xl font-bold mb-4">Отклик на поездку</h2>
+        <h2 className="text-xl font-bold mb-4 text-center">Отклик на поездку</h2>
 
+        {/* Имя */}
         <input
           type="text"
-          placeholder="Имя"
+          placeholder="Ваше имя"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
+        {/* Телефон */}
         <input
           type="tel"
-          placeholder="Телефон"
+          placeholder="Телефон (+7)"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
+        {/* Тип отклика */}
         <div className="relative mb-3">
           <select
             value={type}
-            onChange={(e) => setType(e.target.value)}
+            onChange={(e) => setType(e.target.value as "trip" | "parcel")}
             className="appearance-none w-full px-4 py-2 rounded-xl bg-white/5 text-white border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
           >
             <option value="trip">Поездка</option>
@@ -67,28 +80,32 @@ export default function ReplyModal({ open, onClose, onSubmit }: ReplyModalProps)
           </div>
         </div>
 
+        {/* Количество человек (только если поездка) */}
         {type === "trip" && (
           <input
             type="number"
             placeholder="Количество человек"
             value={people}
             onChange={(e) => setPeople(e.target.value)}
+            min={1}
             className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
           />
         )}
 
+        {/* Комментарий */}
         <textarea
-          placeholder={type === "trip" ? "Комментарий к поездке" : "Что за посылка и вес"}
+          placeholder={type === "trip" ? "Комментарий к поездке" : "Описание посылки (размер, вес)"}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           className="w-full mb-4 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
         />
 
+        {/* Кнопка отправки */}
         <button
           onClick={handleSubmit}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-xl transition"
+          className="w-full bg-indigo-600 active:bg-indigo-700 text-white font-semibold py-2 rounded-xl transition"
         >
-          Отправить
+          Отправить отклик
         </button>
       </div>
     </div>
