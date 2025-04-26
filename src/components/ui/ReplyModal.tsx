@@ -16,7 +16,7 @@ interface ReplyModalProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (data: ReplyPayload) => void;
-  rideId: number | null; // ID поездки
+  rideId: number | null;
 }
 
 export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyModalProps) {
@@ -43,6 +43,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
 
     if (!rideId || !tgUser?.id) {
       console.error("❌ Ошибка: нет rideId или Telegram ID");
+      alert("❌ Ошибка отправки отклика: нет ID поездки или Telegram ID");
       return;
     }
 
@@ -51,7 +52,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
       name,
       phone,
       type,
-      count: type === "trip" ? Number(people) || 1 : 1, // защита от пустого поля
+      count: type === "trip" ? Number(people) || 1 : 1,
       comment,
       telegram_user_id: tgUser.id,
     };
@@ -67,7 +68,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
       <div className="bg-black rounded-2xl p-6 w-full max-w-md shadow-2xl border border-white/10">
         <h2 className="text-xl font-bold mb-4 text-center">Отклик на поездку</h2>
 
-        {/* Имя */}
         <input
           type="text"
           placeholder="Ваше имя"
@@ -76,7 +76,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
-        {/* Телефон */}
         <input
           type="tel"
           placeholder="Телефон (+7)"
@@ -85,7 +84,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
-        {/* Тип поездки */}
         <div className="relative mb-3">
           <select
             value={type}
@@ -102,7 +100,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           </div>
         </div>
 
-        {/* Количество человек (только для поездки) */}
         {type === "trip" && (
           <input
             type="number"
@@ -114,7 +111,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           />
         )}
 
-        {/* Комментарий */}
         <textarea
           placeholder={type === "trip" ? "Комментарий к поездке" : "Описание посылки"}
           value={comment}
@@ -122,7 +118,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           className="w-full mb-4 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
         />
 
-        {/* Кнопка отправки */}
         <button
           onClick={handleSubmit}
           className="w-full bg-indigo-600 active:bg-indigo-700 text-white font-semibold py-2 rounded-xl transition"
