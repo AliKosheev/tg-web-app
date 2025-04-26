@@ -4,7 +4,9 @@ import DriverForm from "./screens/DriverForm";
 import PassengerScreen from "./screens/PassengerScreen";
 import RoleSelectScreen from "./screens/RoleSelectScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import WelcomeScreen from "./screens/WelcomeScreen"; // ✅ новый импорт
+import WelcomeScreen from "./screens/WelcomeScreen";
+import DriverRidesScreen from "./screens/DriverRidesScreen";  
+import PassengerRepliesScreen from "./screens/PassengerRepliesScreen"; 
 
 function AnimatedRoutes() {
   const location = useLocation();
