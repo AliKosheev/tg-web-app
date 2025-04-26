@@ -16,6 +16,8 @@ function AnimatedRoutes() {
         <Route path="/select" element={<RoleSelectScreen />} />
         <Route path="/driver" element={<DriverForm />} />
         <Route path="/passenger" element={<PassengerScreen />} />
+        <Route path="/my-rides" element={<DriverRidesScreen />} />
+        <Route path="/my-replies" element={<PassengerRepliesScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
       </Routes>
     </AnimatePresence>
