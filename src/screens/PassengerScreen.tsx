@@ -1,5 +1,3 @@
-// screens/PassengerScreen.tsx
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import DotsGrid from "@/components/ui/dots-grid";
@@ -32,7 +30,8 @@ export default function PassengerScreen() {
     const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
 
     if (!selectedRide?.id || !tgUser?.id) {
-      alert("❌ Ошибка: нет данных поездки или Telegram ID");
+      console.error("❌ Ошибка: нет ride_id или Telegram ID");
+      alert("Ошибка: не удалось получить данные поездки или Telegram ID");
       return;
     }
 
@@ -43,20 +42,20 @@ export default function PassengerScreen() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ride_id: selectedRide.id,
+          ride_id: selectedRide.id,   // ✅ теперь правильно
           name: data.name,
           phone: data.phone,
-          type: data.type,
+          type: data.type,             // уже либо "trip" либо "parcel"
           count: data.count,
           comment: data.comment,
-          telegram_user_id: tgUser.id,
+          telegram_user_id: tgUser.id, // ✅ обязательно
         }),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        console.log("✅ Отклик отправлен:", result);
+        console.log("✅ Отклик успешно отправлен:", result);
         alert("✅ Отклик успешно отправлен!");
       } else {
         console.error("❌ Ошибка при отправке:", result);
@@ -150,7 +149,7 @@ export default function PassengerScreen() {
         open={showReply}
         onClose={() => setShowReply(false)}
         onSubmit={handleSubmitReply}
-        rideId={selectedRide?.id ?? null} // ✅ обязательно передаём
+        rideId={selectedRide?.id ?? null}
       />
     </main>
   );
