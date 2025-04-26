@@ -22,6 +22,7 @@ export default function PassengerScreen() {
   }, []);
 
   const handleReply = (ride: any) => {
+    console.log("🚀 Открытие модалки для поездки:", ride);
     setSelectedRide(ride);
     setShowReply(true);
   };
@@ -29,9 +30,11 @@ export default function PassengerScreen() {
   const handleSubmitReply = async (data: any) => {
     const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
 
+    console.log("🐞 rideId:", selectedRide?.id);
+    console.log("🐞 tgUser:", tgUser);
+
     if (!selectedRide?.id || !tgUser?.id) {
-      console.error("❌ Ошибка: нет ride_id или Telegram ID");
-      alert("Ошибка: не удалось получить данные поездки или Telegram ID");
+      alert("❌ Ошибка: нет данных поездки или Telegram ID");
       return;
     }
 
@@ -42,20 +45,20 @@ export default function PassengerScreen() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ride_id: selectedRide.id,   // ✅ теперь правильно
+          ride_id: selectedRide.id,
           name: data.name,
           phone: data.phone,
-          type: data.type,             // уже либо "trip" либо "parcel"
-          count: data.count,
+          type: data.type,
           comment: data.comment,
-          telegram_user_id: tgUser.id, // ✅ обязательно
+          count: data.count,
+          telegram_user_id: tgUser.id,
         }),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        console.log("✅ Отклик успешно отправлен:", result);
+        console.log("✅ Отклик отправлен:", result);
         alert("✅ Отклик успешно отправлен!");
       } else {
         console.error("❌ Ошибка при отправке:", result);
