@@ -37,12 +37,13 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
   if (!open) return null;
 
   const handleSubmit = () => {
-    const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user;
+    const raw = localStorage.getItem("triply_user");
+    const user = raw ? JSON.parse(raw) : null;
 
     console.log("🐞 В модалке: rideId =", rideId);
-    console.log("🐞 В модалке: tgUser =", tgUser);
+    console.log("🐞 В модалке: user =", user);
 
-    if (!rideId || !tgUser?.id) {
+    if (!rideId || !user?.id) {
       alert("❌ Ошибка: нет данных поездки или Telegram ID");
       return;
     }
@@ -54,7 +55,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
       type,
       count: type === "trip" ? Number(people) || 1 : 1,
       comment,
-      telegram_user_id: tgUser.id,
+      telegram_user_id: user.id,
     };
 
     console.log("📦 Payload отклика:", payload);
