@@ -13,17 +13,17 @@ export default function DriverRidesScreen() {
   const userId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
 
   useEffect(() => {
-    loadRides();
+    if (userId) {
+      loadRides();
+    }
   }, [userId]);
 
   const loadRides = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + "/rides");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/rides`);
       const data = await res.json();
-      if (userId) {
-        const myRides = data.filter((ride: any) => ride.telegram_user_id === userId);
-        setRides(myRides);
-      }
+      const myRides = data.filter((ride: any) => ride.telegram_user_id === userId);
+      setRides(myRides);
     } catch (err) {
       console.error("❌ Ошибка загрузки поездок:", err);
     }
@@ -60,6 +60,11 @@ export default function DriverRidesScreen() {
     }
   };
 
+  const isRideFinished = (ride: any) => {
+    const rideDateTime = new Date(`${ride.date}T${ride.time}`);
+    return new Date() > rideDateTime;
+  };
+
   return (
     <main className="relative min-h-screen bg-black text-white px-4 py-6 overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
@@ -71,39 +76,51 @@ export default function DriverRidesScreen() {
         {rides.length === 0 ? (
           <p className="text-center text-white/60">Поездок пока нет.</p>
         ) : (
-          rides.map((ride) => (
-            <motion.div
-              key={ride.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"
-            >
-              <div className="text-lg font-bold flex items-center gap-2 mb-1">
-                {ride.from_} → {ride.to}
-              </div>
+          rides.map((ride) => {
+            const finished = isRideFinished(ride);
 
-              <div className="text-sm text-white/70">
-                {ride.date} в {ride.time}
-              </div>
+            return (
+              <motion.div
+                key={ride.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10"
+              >
+                <div className="text-lg font-bold flex items-center gap-2 mb-1">
+                  {ride.from_} → {ride.to}
+                </div>
 
-              <div className="flex gap-2 mt-4">
-                <button
-                  onClick={() => handleOpenReplies(ride.id)}
-                  className="flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-xl"
-                >
-                  Отклики
-                </button>
+                <div className="text-sm text-white/70">
+                  {ride.date} в {ride.time}
+                </div>
 
-                <button
-                  onClick={() => handleDeleteRide(ride.id)}
-                  className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-xl"
-                >
-                  Удалить
-                </button>
-              </div>
-            </motion.div>
-          ))
+                <div className="flex gap-2 mt-4">
+                  {finished ? (
+                    <div className="flex-1 py-2 text-center bg-green-600 text-white rounded-xl text-sm">
+                      ✅ Завершено
+                    </div>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleOpenReplies(ride.id)}
+                        className="flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-xl"
+                      >
+                        Отклики
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteRide(ride.id)}
+                        className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-xl"
+                      >
+                        Удалить
+                      </button>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })
         )}
       </div>
 
