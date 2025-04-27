@@ -26,6 +26,11 @@ export default function PassengerRepliesScreen() {
       });
   }, []);
 
+  const isRidePast = (rideDate: string, rideTime: string) => {
+    const rideDateTime = new Date(`${rideDate}T${rideTime}`);
+    return rideDateTime < new Date();
+  };
+
   return (
     <main className="relative min-h-screen bg-black text-white px-4 py-6 overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
@@ -57,15 +62,21 @@ export default function PassengerRepliesScreen() {
                 📱 Телефон водителя: {reply.ride?.phone || "не указан"}
               </div>
 
-              {reply.ride?.telegram_username && (
-                <a
-                  href={`https://t.me/${reply.ride.telegram_username}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full text-center mt-2 py-2 px-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 hover:opacity-90 transition text-sm font-medium"
-                >
-                  Написать водителю
-                </a>
+              {isRidePast(reply.ride?.date, reply.ride?.time) ? (
+                <div className="block w-full text-center mt-2 py-2 px-4 rounded-xl bg-green-600 text-white text-sm font-medium">
+                  ✅ Завершено
+                </div>
+              ) : (
+                reply.ride?.telegram_username && (
+                  <a
+                    href={`https://t.me/${reply.ride.telegram_username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center mt-2 py-2 px-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 hover:opacity-90 transition text-sm font-medium"
+                  >
+                    Написать водителю
+                  </a>
+                )
               )}
 
               <div className="text-sm mt-3">
