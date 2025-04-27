@@ -10,7 +10,9 @@ export default function DriverRidesScreen() {
   const [replies, setReplies] = useState<any[]>([]);
   const [showRepliesModal, setShowRepliesModal] = useState(false);
 
-  const userId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
+  const raw = localStorage.getItem("triply_user");
+  const user = raw ? JSON.parse(raw) : null;
+  const userId = user?.id;
 
   useEffect(() => {
     if (userId) {
