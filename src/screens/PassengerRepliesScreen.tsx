@@ -6,28 +6,30 @@ import DotsGrid from "@/components/ui/dots-grid";
 export default function PassengerRepliesScreen() {
   const [replies, setReplies] = useState<any[]>([]);
 
-  const userId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
-
   useEffect(() => {
-    if (userId) {
-      loadReplies();
-    }
-  }, [userId]);
+    const raw = localStorage.getItem("triply_user");
+    const user = raw ? JSON.parse(raw) : null;
 
-  const loadReplies = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/my-replies?user_id=${userId}`);
-      const data = await res.json();
-      setReplies(data);
-    } catch (err) {
-      console.error("❌ Ошибка загрузки откликов:", err);
+    if (!user?.id) {
+      console.error("❌ Нет Telegram ID пользователя");
+      return;
     }
-  };
+
+    fetch(`${import.meta.env.VITE_API_URL}/my-replies?telegram_user_id=${user.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("📦 Мои отклики:", data);
+        setReplies(data.reverse());
+      })
+      .catch((err) => {
+        console.error("❌ Ошибка загрузки откликов:", err);
+      });
+  }, []);
 
   return (
     <main className="relative min-h-screen bg-black text-white px-4 py-6 overflow-hidden">
       <DotsGrid className="absolute inset-0 z-0 opacity-30" />
-      <TopBar showBack={true} />
+      <TopBar showBack={true} showProfile={true} />
 
       <div className="relative z-10 max-w-md mx-auto space-y-6 pt-12">
         <h1 className="text-2xl font-bold mb-4 text-center">Мои отклики</h1>
@@ -46,12 +48,30 @@ export default function PassengerRepliesScreen() {
               <div className="text-lg font-bold mb-1">
                 {reply.ride?.from_} → {reply.ride?.to}
               </div>
-              <div className="text-sm text-white/70">
+
+              <div className="text-sm text-white/70 mb-1">
                 {reply.ride?.date} в {reply.ride?.time}
               </div>
-              <div className="text-sm mt-2">
+
+              <div className="text-sm text-white/70 mb-1">
+                📱 Телефон водителя: {reply.ride?.phone || "не указан"}
+              </div>
+
+              {reply.ride?.telegram_username && (
+                <a
+                  href={`https://t.me/${reply.ride.telegram_username}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center mt-2 py-2 px-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 hover:opacity-90 transition text-sm font-medium"
+                >
+                  Написать водителю
+                </a>
+              )}
+
+              <div className="text-sm mt-3">
                 <b>Тип:</b> {reply.type === "trip" ? "Поездка" : "Посылка"}
               </div>
+
               <div className="text-sm">
                 <b>Комментарий:</b> {reply.comment || "—"}
               </div>
