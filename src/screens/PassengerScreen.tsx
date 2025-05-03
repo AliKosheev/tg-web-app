@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 import DotsGrid from "@/components/ui/dots-grid";
 import TopBar from "@/components/ui/TopBar";
 import ReplyModal from "@/components/ui/ReplyModal";
+import SuccessModal from "@/components/ui/SuccessModal";
 
 export default function PassengerScreen() {
   const [rides, setRides] = useState<any[]>([]);
   const [showReply, setShowReply] = useState(false);
   const [selectedRide, setSelectedRide] = useState<any>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const fetchRides = async () => {
     try {
@@ -60,11 +62,10 @@ export default function PassengerScreen() {
 
       if (response.ok) {
         console.log("✅ Отклик отправлен:", result);
-        alert("✅ Отклик успешно отправлен!");
-
+        setShowSuccess(true);
         setShowReply(false);
         setSelectedRide(null);
-        await fetchRides(); // 🔁 обновляем список
+        await fetchRides();
       } else {
         console.error("❌ Ошибка при отправке:", result);
         alert("Ошибка при отправке отклика");
@@ -165,6 +166,8 @@ export default function PassengerScreen() {
         onSubmit={handleSubmitReply}
         rideId={selectedRide?.id ?? null}
       />
+
+      <SuccessModal open={showSuccess} onClose={() => setShowSuccess(false)} />
     </main>
   );
 }

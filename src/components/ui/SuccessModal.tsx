@@ -4,11 +4,9 @@ import { useEffect } from "react";
 export default function SuccessModal({
   open,
   onClose,
-  message = "Ваша поездка добавлена",
 }: {
   open: boolean;
   onClose: () => void;
-  message?: string;
 }) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -34,21 +32,17 @@ export default function SuccessModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.3 }}
-            onClick={(e) => e.stopPropagation()} // чтобы не закрывался при клике на сам alert
+            onClick={(e) => e.stopPropagation()}
           >
-            <p className="text-white text-lg font-semibold text-center">{message}</p>
-
-            {/* Иконка галочки */}
             <motion.img
               src="/icons/check.svg"
-              alt="Галочка"
+              alt="Успешно"
               className="w-10 h-10"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
             />
 
-            {/* Кнопка */}
             <button
               onClick={onClose}
               className="mt-2 w-full bg-gradient-to-r from-violet-500 to-indigo-600 text-white font-semibold py-2 rounded-xl shadow-lg"
