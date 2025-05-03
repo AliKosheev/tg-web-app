@@ -134,7 +134,7 @@ export default function PassengerScreen() {
                 <img src="/icons/luggage.svg" className="w-5 h-5" title="Багаж" />
               )}
               {ride.parcel && (
-                <img src="/icons/check.svg" className="w-5 h-5" title="Посылка" />
+                <img src="/icons/telegram.svg" className="w-5 h-5" title="Посылка" />
               )}
             </div>
 
