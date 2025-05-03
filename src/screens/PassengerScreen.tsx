@@ -9,16 +9,18 @@ export default function PassengerScreen() {
   const [showReply, setShowReply] = useState(false);
   const [selectedRide, setSelectedRide] = useState<any>(null);
 
+  const fetchRides = async () => {
+    try {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/rides");
+      const data = await res.json();
+      setRides(data.reverse());
+    } catch (err) {
+      console.error("❌ Ошибка загрузки поездок:", err);
+    }
+  };
+
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + "/rides")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("📦 Полученные поездки:", data);
-        setRides(data.reverse());
-      })
-      .catch((err) => {
-        console.error("❌ Ошибка загрузки поездок:", err);
-      });
+    fetchRides();
   }, []);
 
   const handleReply = (ride: any) => {
@@ -59,6 +61,10 @@ export default function PassengerScreen() {
       if (response.ok) {
         console.log("✅ Отклик отправлен:", result);
         alert("✅ Отклик успешно отправлен!");
+
+        setShowReply(false);
+        setSelectedRide(null);
+        await fetchRides(); // 🔁 обновляем список
       } else {
         console.error("❌ Ошибка при отправке:", result);
         alert("Ошибка при отправке отклика");
@@ -66,8 +72,6 @@ export default function PassengerScreen() {
     } catch (err) {
       console.error("🚨 Ошибка сети:", err);
       alert("Ошибка сети при отправке отклика");
-    } finally {
-      setShowReply(false);
     }
   };
 
@@ -113,15 +117,15 @@ export default function PassengerScreen() {
               <img src="/icons/car.svg" className="w-4 h-4" />
               {ride.car}
               {ride.seats === 0 ? (
-  <div className="ml-4 px-3 py-1 rounded-full bg-red-700/60 text-white text-xs">
-    мест нет
-  </div>
-) : (
-  <>
-    <img src="/icons/seats.svg" className="w-4 h-4 ml-4" />
-    {ride.seats} мест
-  </>
-)}
+                <div className="ml-4 px-3 py-1 rounded-full bg-red-700/60 text-white text-xs">
+                  мест нет
+                </div>
+              ) : (
+                <>
+                  <img src="/icons/seats.svg" className="w-4 h-4 ml-4" />
+                  {ride.seats} мест
+                </>
+              )}
             </div>
 
             <div className="flex items-center gap-4 mt-2">
