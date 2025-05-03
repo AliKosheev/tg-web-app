@@ -23,6 +23,7 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
   const [type, setType] = useState<"trip" | "parcel">("trip");
   const [people, setPeople] = useState("");
   const [comment, setComment] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -31,17 +32,21 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
       setType("trip");
       setPeople("");
       setComment("");
+      setSubmitted(false);
     }
   }, [open]);
 
   if (!open) return null;
 
   const handleSubmit = () => {
+    setSubmitted(true);
+
+    if (!name || !phone || (type === "trip" && !people)) {
+      return;
+    }
+
     const raw = localStorage.getItem("triply_user");
     const user = raw ? JSON.parse(raw) : null;
-
-    console.log("🐞 В модалке: rideId =", rideId);
-    console.log("🐞 В модалке: user =", user);
 
     if (!rideId || !user?.id) {
       alert("❌ Ошибка: нет данных поездки или Telegram ID");
@@ -58,36 +63,48 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
       telegram_user_id: user.id,
     };
 
-    console.log("📦 Payload отклика:", payload);
-
     onSubmit(payload);
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center px-4">
-      <div className="bg-black rounded-2xl p-6 w-full max-w-md shadow-2xl border border-white/10">
-        <h2 className="text-xl font-bold mb-4 text-center">Отклик на поездку</h2>
+    <div
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center px-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative bg-black rounded-2xl p-6 w-full max-w-md shadow-2xl border border-white/10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* SVG "назад" */}
+        <button onClick={onClose} className="absolute left-4 top-4 text-white/50 hover:text-white">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
 
-        {/* Имя */}
+        <h2 className="text-xl font-bold mb-6 text-center">Отклик на поездку</h2>
+
         <input
           type="text"
           placeholder="Ваше имя"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
+          className={`w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border ${
+            submitted && !name ? "border-red-500 ring-1 ring-red-500" : "border-white/10"
+          } focus:ring-2 focus:ring-indigo-500 outline-none`}
         />
 
-        {/* Телефон */}
         <input
           type="tel"
           placeholder="Телефон (+7)"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
+          className={`w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border ${
+            submitted && !phone ? "border-red-500 ring-1 ring-red-500" : "border-white/10"
+          } focus:ring-2 focus:ring-indigo-500 outline-none`}
         />
 
-        {/* Тип поездки */}
         <div className="relative mb-3">
           <select
             value={type}
@@ -104,7 +121,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           </div>
         </div>
 
-        {/* Количество человек */}
         {type === "trip" && (
           <input
             type="number"
@@ -112,11 +128,12 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
             value={people}
             onChange={(e) => setPeople(e.target.value)}
             min={1}
-            className="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none"
+            className={`w-full mb-3 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border ${
+              submitted && !people ? "border-red-500 ring-1 ring-red-500" : "border-white/10"
+            } focus:ring-2 focus:ring-indigo-500 outline-none`}
           />
         )}
 
-        {/* Комментарий */}
         <textarea
           placeholder={type === "trip" ? "Комментарий к поездке" : "Описание посылки"}
           value={comment}
@@ -124,7 +141,6 @@ export default function ReplyModal({ open, onClose, onSubmit, rideId }: ReplyMod
           className="w-full mb-4 px-4 py-2 rounded-xl bg-white/5 text-white placeholder-white/40 border border-white/10 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
         />
 
-        {/* Кнопка отправки */}
         <button
           onClick={handleSubmit}
           className="w-full bg-indigo-600 active:bg-indigo-700 text-white font-semibold py-2 rounded-xl transition"
