@@ -112,8 +112,16 @@ export default function PassengerScreen() {
             <div className="text-sm text-white/70 flex items-center gap-2 mt-1">
               <img src="/icons/car.svg" className="w-4 h-4" />
               {ride.car}
-              <img src="/icons/seats.svg" className="w-4 h-4 ml-4" />
-              {ride.seats} мест
+              {ride.seats === 0 ? (
+  <div className="ml-4 px-3 py-1 rounded-full bg-red-700/60 text-white text-xs">
+    мест нет
+  </div>
+) : (
+  <>
+    <img src="/icons/seats.svg" className="w-4 h-4 ml-4" />
+    {ride.seats} мест
+  </>
+)}
             </div>
 
             <div className="flex items-center gap-4 mt-2">
