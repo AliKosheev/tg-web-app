@@ -57,7 +57,7 @@ export default function DriverForm() {
       name,
       phone,
       car: carType,
-      seats,
+      seats: parseInt(seats, 10),
       luggage,
       parcel,
       telegram_username,
