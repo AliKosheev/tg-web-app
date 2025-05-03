@@ -88,12 +88,14 @@ export default function ProfileScreen() {
             <span>Очистить данные</span>
           </button>
           <hr className="border-white/10" />
-          <button
-            onClick={() => window.open("https://t.me/your_support_bot", "_blank")}
-            className="w-full text-left px-4 py-4 flex justify-between items-center hover:bg-white/10 transition"
+          <a
+              href="https://t.me/cossmo_samurai0714"
+              target="_blank"
+              rel="noopener noreferrer"
+             className="w-full text-left px-4 py-4 flex justify-between items-center hover:bg-white/10 transition"
           >
             <span>Написать в поддержку</span>
-          </button>
+          </a>
         </div>
       </div>
     </main>
